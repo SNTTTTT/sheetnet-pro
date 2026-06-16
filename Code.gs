@@ -6,10 +6,13 @@
 
 // ── CONFIGURACIÓN ─────────────────────────────────────────────────────────────
 const CFG_APP = {
+  SS_ID          : "17guNUaSg2bHQ9vd2HiS0f02YK92R-cl1rywFWFd1JN0",
   HOJA_TOKENS    : "Tokens_Candidatos",
   HOJA_DOMINIOS  : "Dominios_Permitidos",
   HOJA_RESPUESTAS: "Base_Cleaver_CANDIDATOS"
 };
+
+function _ss() { return SpreadsheetApp.openById(CFG_APP.SS_ID); }
 
 // ── BLOQUES CLEAVER (24 × 4 adjetivos) ───────────────────────────────────────
 const BLOQUES_CLEAVER = [
@@ -55,7 +58,7 @@ function validarCorreoCorporativo(correo) {
     if (!correo.includes('@')) return {ok: false, msg: "Correo inválido."};
 
     const dominio = correo.split('@')[1];
-    const ss   = SpreadsheetApp.getActiveSpreadsheet();
+    const ss   = _ss();
     const hoja = ss.getSheetByName(CFG_APP.HOJA_DOMINIOS);
     if (!hoja) return {ok: false, msg: "Hoja 'Dominios_Permitidos' no encontrada. Ejecute inicializarHojasApp()."};
 
@@ -77,7 +80,7 @@ function validarCorreoCorporativo(correo) {
 function validarToken(token) {
   try {
     token = String(token).trim().toUpperCase();
-    const ss   = SpreadsheetApp.getActiveSpreadsheet();
+    const ss   = _ss();
     const hoja = ss.getSheetByName(CFG_APP.HOJA_TOKENS);
     if (!hoja) return {ok: false, msg: "Hoja 'Tokens_Candidatos' no encontrada. Ejecute inicializarHojasApp()."};
 
@@ -107,7 +110,7 @@ function validarToken(token) {
 // ── GUARDAR RESPUESTAS ────────────────────────────────────────────────────────
 function guardarRespuestas(payload) {
   try {
-    const ss   = SpreadsheetApp.getActiveSpreadsheet();
+    const ss   = _ss();
     const hoja = ss.getSheetByName(CFG_APP.HOJA_RESPUESTAS);
     if (!hoja) return {ok: false, msg: "Hoja 'Base_Cleaver_CANDIDATOS' no encontrada."};
 
@@ -154,7 +157,7 @@ function obtenerBloques() {
 // ── UTIL: ya respondió ────────────────────────────────────────────────────────
 function _yaRespondio(correo) {
   try {
-    const ss   = SpreadsheetApp.getActiveSpreadsheet();
+    const ss   = _ss();
     const hoja = ss.getSheetByName(CFG_APP.HOJA_RESPUESTAS);
     if (!hoja || hoja.getLastRow() < 2) return false;
     const datos = hoja.getRange(2, 2, hoja.getLastRow() - 1, 1).getValues();
@@ -164,7 +167,7 @@ function _yaRespondio(correo) {
 
 // ── ADMIN: inicializar hojas (ejecutar UNA VEZ) ───────────────────────────────
 function inicializarHojasApp() {
-  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const ss = _ss();
 
   if (!ss.getSheetByName(CFG_APP.HOJA_TOKENS)) {
     const h = ss.insertSheet(CFG_APP.HOJA_TOKENS);
@@ -195,7 +198,7 @@ function inicializarHojasApp() {
 // ── ADMIN: sincronizar tokens desde Nuevos_Ingresos ──────────────────────────
 function sincronizarTokensDesdeNuevosIngresos() {
   try {
-    const ss   = SpreadsheetApp.getActiveSpreadsheet();
+    const ss   = _ss();
     const hNI  = ss.getSheetByName("Nuevos_Ingresos");
     const hTok = ss.getSheetByName(CFG_APP.HOJA_TOKENS);
     if (!hNI || !hTok) { SpreadsheetApp.getUi().alert("Hojas no encontradas."); return; }
