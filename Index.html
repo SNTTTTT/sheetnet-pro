@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SOLU · Evaluación DISC — CLEAVER</title>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800;900&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --az:   #55B6E3;
+      --az2:  #3AA0D0;
+      --azdk: #0d5a7a;
+      --cr:   #F26D5B;
+      --cr2:  #d95a48;
+      --g50:  #F8FAFC;
+      --g100: #EEF4F8;
+      --g200: #D9D9D9;
+      --g300: #CBD5E1;
+      --g400: #94A3B8;
+      --g500: #6B7280;
+      --g700: #374151;
+      --g800: #1F2937;
+      --wh:   #FFFFFF;
+      --bg:   #EEF2FF;
+      --vd:   #22C55E;
+      --vd2:  #16A34A;
+      --rj:   #EF4444;
+      --am:   #F59E0B;
+      --r:    8px;
+      --rlg:  12px;
+      --sh:   0 1px 3px rgba(0,0,0,.08), 0 4px 16px rgba(0,0,0,.04);
+      --shlg: 0 8px 30px rgba(0,0,0,.12);
+      --t:    150ms cubic-bezier(.4,0,.2,1);
+      --mas:  #0d5a7a;
+      --menos:#F26D5B;
+    }
+
+    body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--g800); min-height: 100vh; }
+
+    /* ── TOPBAR ── */
+    .topbar { background: var(--azdk); height: 52px; position: sticky; top: 0; z-index: 200; box-shadow: 0 2px 12px rgba(0,0,0,.2); }
+    .tb-in { height: 100%; max-width: 1200px; margin: 0 auto; padding: 0 20px; display: flex; align-items: center; justify-content: space-between; }
+    .tb-l { display: flex; align-items: center; gap: 12px; }
+    .tb-logo { height: 28px; filter: brightness(0) invert(1); object-fit: contain; }
+    .tb-sep { width: 1px; height: 22px; background: rgba(255,255,255,.22); }
+    .tb-info { display: flex; flex-direction: column; gap: 1px; }
+    .tb-sys { font-family: 'Sora', sans-serif; font-size: 13px; font-weight: 700; color: #fff; line-height: 1; }
+    .tb-mod { font-size: 10px; font-weight: 500; color: var(--az); text-transform: uppercase; letter-spacing: .7px; line-height: 1; }
+    .tb-badge { background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.18); color: rgba(255,255,255,.85); font-size: 11px; font-weight: 500; padding: 4px 12px; border-radius: 20px; display: none; }
+
+    /* ── SCREENS ── */
+    .screen { display: none; }
+    .screen.active { display: block; }
+
+    /* ══ SCREEN LOGIN ══ */
+    .login-outer { min-height: calc(100vh - 52px); display: flex; align-items: center; justify-content: center; padding: 40px 16px; }
+    .login-card { width: 100%; max-width: 480px; background: var(--wh); border-radius: var(--rlg); box-shadow: var(--shlg); overflow: hidden; }
+    .card-colorbar { height: 10px; background: var(--azdk); }
+
+    .login-banner { background: linear-gradient(135deg, var(--azdk) 0%, #157aa8 100%); padding: 32px 30px 28px; text-align: center; }
+    .banner-icon { width: 54px; height: 54px; background: rgba(255,255,255,.1); border: 1.5px solid rgba(255,255,255,.22); border-radius: 14px; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; font-size: 24px; }
+    .login-banner h2 { font-family: 'Sora', sans-serif; font-size: 19px; font-weight: 800; color: #fff; margin-bottom: 7px; }
+    .login-banner p { font-size: 12.5px; color: rgba(255,255,255,.78); line-height: 1.55; }
+    .banner-tag { display: inline-block; margin-top: 14px; background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.2); color: var(--az); font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 700; padding: 4px 12px; border-radius: 20px; letter-spacing: .6px; }
+
+    .login-body { padding: 28px 30px 32px; }
+
+    .sec-hdr { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; }
+    .sec-num { width: 26px; height: 26px; background: var(--cr); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Sora', sans-serif; font-size: 12px; font-weight: 800; color: #fff; flex-shrink: 0; }
+    .sec-lbl { font-family: 'Sora', sans-serif; font-size: 13px; font-weight: 700; color: var(--g700); }
+
+    .solu-tabs { display: flex; border-bottom: 2px solid var(--g200); margin-bottom: 24px; }
+    .solu-tab { flex: 1; padding: 10px 8px; text-align: center; cursor: pointer; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 600; color: var(--g500); background: none; border: none; border-bottom: 3px solid transparent; margin-bottom: -2px; transition: color var(--t), border-color var(--t); }
+    .solu-tab.active { color: var(--azdk); border-bottom-color: var(--cr); }
+    .solu-tab:hover:not(.active) { color: var(--g700); }
+
+    .campo { margin-bottom: 22px; }
+    .clabel { display: block; font-size: 11px; font-weight: 600; color: var(--g500); text-transform: uppercase; letter-spacing: .65px; margin-bottom: 8px; }
+    .req { color: var(--cr); }
+    .cinput { width: 100%; padding: 9px 0; border: none; border-bottom: 1.5px solid var(--g300); border-radius: 0; font-family: 'DM Sans', sans-serif; font-size: 15px; color: var(--g800); background: transparent; outline: none; transition: border-color var(--t); }
+    .cinput:focus { border-bottom: 2px solid var(--azdk); }
+    .cinput::placeholder { color: var(--g400); font-size: 14px; }
+    .cinput-mono { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; }
+
+    .btn-solu { width: 100%; padding: 13px 20px; background: var(--cr); color: #fff; border: none; border-radius: var(--r); font-family: 'Sora', sans-serif; font-size: 14px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: background var(--t), box-shadow var(--t), transform var(--t); margin-top: 8px; }
+    .btn-solu:hover:not(:disabled) { background: var(--cr2); box-shadow: 0 4px 18px rgba(242,109,91,.32); transform: translateY(-1px); }
+    .btn-solu:active:not(:disabled) { transform: translateY(0); }
+    .btn-solu:disabled { background: var(--g300); cursor: not-allowed; }
+
+    .msg-error { background: #FEF2F2; border: 1px solid #FECACA; color: var(--rj); padding: 10px 14px; border-radius: 6px; font-size: 13px; font-weight: 500; margin-top: 14px; display: none; }
+
+    /* ══ SCREEN PRUEBA ══ */
+    .prueba-outer { max-width: 980px; margin: 0 auto; padding: 24px 20px 80px; }
+
+    .prog-sticky { position: sticky; top: 52px; z-index: 100; background: var(--bg); padding-bottom: 14px; }
+    .prog-card { background: var(--wh); border-radius: var(--r); box-shadow: var(--sh); padding: 14px 20px; display: flex; align-items: center; gap: 18px; }
+    .prog-info { flex: 1; min-width: 0; }
+    .prog-meta { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; }
+    .prog-title { font-family: 'Sora', sans-serif; font-size: 12px; font-weight: 700; color: var(--azdk); text-transform: uppercase; letter-spacing: .5px; }
+    .prog-count { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 700; color: var(--g500); }
+    .prog-track { height: 4px; background: var(--g200); border-radius: 2px; overflow: hidden; }
+    .prog-fill { height: 100%; background: var(--azdk); border-radius: 2px; transition: width .4s cubic-bezier(.4,0,.2,1); }
+    .prog-pct { font-family: 'Sora', sans-serif; font-size: 24px; font-weight: 900; color: var(--azdk); white-space: nowrap; }
+
+    .instruc-card { background: var(--wh); border-radius: var(--rlg); box-shadow: var(--sh); overflow: hidden; margin-bottom: 20px; }
+    .instruc-body { padding: 18px 22px; display: flex; gap: 14px; align-items: flex-start; }
+    .instruc-icon { width: 40px; height: 40px; background: linear-gradient(135deg, var(--azdk) 0%, var(--az2) 100%); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+    .instruc-txt { font-size: 13px; line-height: 1.65; color: var(--g700); padding-top: 2px; }
+    .instruc-txt strong { color: var(--azdk); font-weight: 700; }
+
+    .leyenda { display: flex; gap: 22px; margin-bottom: 18px; flex-wrap: wrap; }
+    .leg-item { display: flex; align-items: center; gap: 7px; font-size: 12px; font-weight: 600; }
+    .leg-dot { width: 13px; height: 13px; border-radius: 50%; flex-shrink: 0; }
+    .leg-dot-mas { background: var(--mas); }
+    .leg-dot-menos { background: var(--menos); }
+    .leg-item.leg-mas { color: var(--mas); }
+    .leg-item.leg-menos { color: var(--menos); }
+
+    .alerta-inc { background: #FFFBEB; border: 1.5px solid var(--am); color: #92400E; padding: 12px 16px; border-radius: var(--r); font-size: 13px; font-weight: 600; margin-bottom: 16px; display: none; }
+
+    .bloques-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 14px; margin-bottom: 30px; }
+
+    .bloque-card { background: var(--wh); border: 1.5px solid var(--g200); border-radius: var(--rlg); overflow: hidden; box-shadow: var(--sh); transition: border-color var(--t), box-shadow var(--t); }
+    .bloque-card.completado { border-color: var(--vd); box-shadow: var(--sh), 0 0 0 1px rgba(34,197,94,.12); }
+    .bloque-card.incompleto-error { border-color: var(--rj); box-shadow: var(--sh), 0 0 0 3px rgba(239,68,68,.12); }
+
+    .bloque-header { background: var(--azdk); padding: 8px 14px; display: flex; align-items: center; justify-content: space-between; }
+    .blq-left { display: flex; align-items: center; gap: 8px; }
+    .blq-num { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 700; color: var(--az); letter-spacing: .5px; }
+    .blq-title { font-family: 'Sora', sans-serif; font-size: 12px; font-weight: 700; color: #fff; }
+    .blq-check { font-size: 14px; color: rgba(255,255,255,.4); transition: color var(--t); }
+    .bloque-card.completado .blq-check { color: var(--vd); }
+
+    .bloque-body { padding: 10px 14px 14px; }
+
+    .adj-tabla { width: 100%; border-collapse: collapse; }
+    .adj-tabla thead tr th { font-family: 'Sora', sans-serif; font-size: 9.5px; font-weight: 800; text-align: center; padding: 4px 6px 8px; text-transform: uppercase; letter-spacing: .7px; }
+    .th-mas { color: var(--mas); }
+    .th-menos { color: var(--menos); }
+    .th-adj { text-align: left !important; color: var(--g400); }
+    .adj-tabla tbody tr td { padding: 5px 6px; vertical-align: middle; border-bottom: 1px solid var(--g50); }
+    .adj-tabla tbody tr:last-child td { border-bottom: none; }
+    .adj-tabla tbody tr:hover td { background: #F5F7FF; }
+    .adj-nombre { font-family: 'DM Sans', sans-serif; font-size: 12.5px; font-weight: 500; color: var(--g700); padding-left: 6px !important; }
+
+    .radio-mas, .radio-menos { appearance: none; -webkit-appearance: none; width: 20px; height: 20px; border: 2px solid var(--g300); border-radius: 50%; cursor: pointer; display: block; margin: 0 auto; position: relative; transition: border-color var(--t), background var(--t); }
+    .radio-mas:hover:not(:checked) { border-color: var(--mas); }
+    .radio-menos:hover:not(:checked) { border-color: var(--menos); }
+    .radio-mas:checked { background: var(--mas); border-color: var(--mas); }
+    .radio-menos:checked { background: var(--menos); border-color: var(--menos); }
+    .radio-mas:checked::after, .radio-menos:checked::after { content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 7px; height: 7px; background: #fff; border-radius: 50%; }
+    .radio-mas:disabled, .radio-menos:disabled { opacity: .3; cursor: not-allowed; }
+
+    .enviar-wrap { text-align: center; padding: 10px 0; }
+    .btn-enviar { padding: 15px 56px; background: var(--vd); color: #fff; border: none; border-radius: var(--r); font-family: 'Sora', sans-serif; font-size: 16px; font-weight: 800; cursor: pointer; display: inline-flex; align-items: center; gap: 10px; box-shadow: 0 4px 18px rgba(34,197,94,.28); transition: background var(--t), transform var(--t), box-shadow var(--t); }
+    .btn-enviar:hover:not(:disabled) { background: var(--vd2); transform: translateY(-2px); box-shadow: 0 8px 28px rgba(34,197,94,.38); }
+    .btn-enviar:active:not(:disabled) { transform: translateY(0); }
+    .btn-enviar:disabled { background: var(--g300); cursor: not-allowed; box-shadow: none; }
+
+    /* ══ SCREEN CONFIRMACIÓN ══ */
+    .confirm-outer { min-height: calc(100vh - 52px); display: flex; align-items: center; justify-content: center; padding: 40px 16px; }
+    .confirm-card { width: 100%; max-width: 520px; background: var(--wh); border-radius: var(--rlg); box-shadow: var(--shlg); overflow: hidden; text-align: center; }
+    .confirm-colorbar { height: 10px; background: var(--vd); }
+    .confirm-body { padding: 48px 40px 52px; }
+    .confirm-icon { width: 72px; height: 72px; background: linear-gradient(135deg, var(--vd) 0%, var(--vd2) 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Sora', sans-serif; font-size: 32px; font-weight: 900; color: #fff; margin: 0 auto 24px; box-shadow: 0 8px 28px rgba(34,197,94,.28); }
+    .confirm-card h2 { font-family: 'Sora', sans-serif; font-size: 22px; font-weight: 800; color: var(--vd2); margin-bottom: 14px; }
+    .confirm-card p { font-size: 14px; color: var(--g500); line-height: 1.75; }
+    .confirm-nombre { font-family: 'Sora', sans-serif; font-weight: 800; color: var(--azdk); font-size: 15px; }
+    .confirm-fecha { display: inline-block; margin-top: 26px; background: var(--g50); border: 1px solid var(--g200); color: var(--g500); font-family: 'JetBrains Mono', monospace; font-size: 11px; padding: 6px 16px; border-radius: 20px; }
+
+    /* ── OVERLAY ── */
+    .overlay { position: fixed; inset: 0; background: rgba(13,90,122,.32); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px); display: none; align-items: center; justify-content: center; z-index: 999; }
+    .overlay.visible { display: flex; }
+    .spinner-box { background: var(--wh); border-radius: var(--rlg); padding: 36px 52px; text-align: center; box-shadow: var(--shlg); }
+    .spinner { width: 44px; height: 44px; border: 4px solid var(--g100); border-top-color: var(--azdk); border-radius: 50%; animation: spin .75s linear infinite; margin: 0 auto 16px; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .spinner-box p { font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 600; color: var(--g500); }
+
+    @media (max-width: 640px) {
+      .tb-mod, .prog-pct, .instruc-icon { display: none; }
+      .login-body { padding: 22px 20px 28px; }
+      .confirm-body { padding: 36px 24px 40px; }
+      .prueba-outer { padding: 16px 12px 60px; }
+      .bloques-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div class="tb-in">
+      <div class="tb-l">
+        <img class="tb-logo"
+             src="https://drive.google.com/thumbnail?id=1qFzyQbps6Nn2RmaSsnYq5YfiH0npLqHp&sz=w300"
+             alt="SOLU"
+             onerror="this.outerHTML='<span style=\'font-family:Sora,sans-serif;font-size:18px;font-weight:900;color:#fff\'>SOLU</span>'">
+        <div class="tb-sep"></div>
+        <div class="tb-info">
+          <span class="tb-sys">Evaluación DISC · CLEAVER</span>
+          <span class="tb-mod">Capital Humano</span>
+        </div>
+      </div>
+      <div class="tb-r">
+        <div class="tb-badge" id="tb-badge"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- OVERLAY -->
+  <div class="overlay" id="overlay">
+    <div class="spinner-box">
+      <div class="spinner"></div>
+      <p id="overlay-msg">Procesando...</p>
+    </div>
+  </div>
+
+  <!-- ══════════ SCREEN 1 — LOGIN ══════════ -->
+  <div class="screen active" id="screen-login">
+    <div class="login-outer">
+      <div class="login-card">
+        <div class="card-colorbar"></div>
+        <div class="login-banner">
+          <div class="banner-icon">🎯</div>
+          <h2>Evaluación de Perfil Conductual</h2>
+          <p>Herramienta DISC — Método CLEAVER<br>Esta prueba toma aproximadamente 10 minutos.</p>
+          <span class="banner-tag">CAPITAL HUMANO · SOLU</span>
+        </div>
+        <div class="login-body">
+          <div class="sec-hdr">
+            <div class="sec-num">1</div>
+            <span class="sec-lbl">Identifíquese para comenzar</span>
+          </div>
+          <div class="solu-tabs">
+            <button class="solu-tab active" id="tab-corp" onclick="switchTab('corp')">Personal Interno</button>
+            <button class="solu-tab" id="tab-cand" onclick="switchTab('cand')">Candidato Externo</button>
+          </div>
+
+          <!-- Interno -->
+          <div id="form-corp">
+            <div class="campo">
+              <label class="clabel">Correo Corporativo <span class="req">*</span></label>
+              <input class="cinput" type="email" id="inp-correo" placeholder="usuario@empresa.com" autocomplete="off">
+            </div>
+            <div class="campo">
+              <label class="clabel">Nombre Completo <span class="req">*</span></label>
+              <input class="cinput" type="text" id="inp-nombre-corp" placeholder="Como aparece en nómina">
+            </div>
+            <div class="campo">
+              <label class="clabel">Área / Puesto <span class="req">*</span></label>
+              <input class="cinput" type="text" id="inp-puesto-corp" placeholder="Ej: Analista de Operaciones">
+            </div>
+            <button class="btn-solu" onclick="loginCorp()">Iniciar Evaluación <span>→</span></button>
+          </div>
+
+          <!-- Candidato -->
+          <div id="form-cand" style="display:none;">
+            <div class="campo">
+              <label class="clabel">Código de Acceso <span class="req">*</span></label>
+              <input class="cinput cinput-mono" type="text" id="inp-token" placeholder="CAND-2025-001-XXXX" autocomplete="off">
+            </div>
+            <button class="btn-solu" onclick="loginCand()">Validar Código <span>→</span></button>
+          </div>
+
+          <div class="msg-error" id="msg-error"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════ SCREEN 2 — PRUEBA ══════════ -->
+  <div class="screen" id="screen-prueba">
+    <div class="prueba-outer">
+
+      <div class="prog-sticky">
+        <div class="prog-card">
+          <div class="prog-info">
+            <div class="prog-meta">
+              <span class="prog-title">Progreso</span>
+              <span class="prog-count" id="prog-txt">0 / 24 bloques</span>
+            </div>
+            <div class="prog-track">
+              <div class="prog-fill" id="prog-fill" style="width:0%"></div>
+            </div>
+          </div>
+          <div class="prog-pct" id="prog-pct">0%</div>
+        </div>
+      </div>
+
+      <div class="instruc-card">
+        <div class="card-colorbar"></div>
+        <div class="instruc-body">
+          <div class="instruc-icon">📋</div>
+          <div class="instruc-txt">
+            <strong>Instrucciones:</strong> Las palabras descriptivas están agrupadas en series de cuatro.
+            Seleccione con <strong style="color:var(--mas)">MÁS ●</strong> la que <em>mejor</em> lo describe,
+            y con <strong style="color:var(--menos)">MENOS ●</strong> la que <em>menos</em> lo describe.
+            <strong>No puede elegir la misma palabra para ambas columnas.</strong>
+          </div>
+        </div>
+      </div>
+
+      <div class="leyenda">
+        <div class="leg-item leg-mas"><div class="leg-dot leg-dot-mas"></div>MÁS — Cómo me describe mejor</div>
+        <div class="leg-item leg-menos"><div class="leg-dot leg-dot-menos"></div>MENOS — Lo que menos me describe</div>
+      </div>
+
+      <div class="alerta-inc" id="alerta-inc">⚠ Hay bloques sin completar (en rojo). Complete todos antes de enviar.</div>
+
+      <div class="bloques-grid" id="bloques-container"></div>
+
+      <div class="enviar-wrap">
+        <button class="btn-enviar" onclick="enviarRespuestas()" id="btn-enviar">✓ &nbsp;Enviar Evaluación</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══════════ SCREEN 3 — CONFIRMACIÓN ══════════ -->
+  <div class="screen" id="screen-confirm">
+    <div class="confirm-outer">
+      <div class="confirm-card">
+        <div class="confirm-colorbar"></div>
+        <div class="confirm-body">
+          <div class="confirm-icon">✓</div>
+          <h2>¡Evaluación Registrada!</h2>
+          <p>
+            Gracias, <span class="confirm-nombre" id="confirm-nombre">—</span>.<br><br>
+            Su evaluación ha sido registrada exitosamente.<br>
+            El equipo de Capital Humano revisará sus resultados.<br><br>
+            <strong style="color:var(--azdk)">Puede cerrar esta ventana con seguridad.</strong>
+          </p>
+          <div class="confirm-fecha" id="confirm-fecha"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script>
+  let SESION    = { tipo: null, correo: null, nombre: null, puesto: null, tokenFila: null };
+  let BLOQUES   = [];
+  let RESPUESTAS = {};
+
+  function switchTab(t) {
+    document.getElementById('tab-corp').classList.toggle('active', t === 'corp');
+    document.getElementById('tab-cand').classList.toggle('active', t === 'cand');
+    document.getElementById('form-corp').style.display = t === 'corp' ? 'block' : 'none';
+    document.getElementById('form-cand').style.display = t === 'cand' ? 'block' : 'none';
+    document.getElementById('msg-error').style.display = 'none';
+  }
+
+  function mostrarError(msg) {
+    const el = document.getElementById('msg-error');
+    el.textContent = '⚠ ' + msg;
+    el.style.display = 'block';
+  }
+
+  function loginCorp() {
+    const correo = document.getElementById('inp-correo').value.trim();
+    const nombre = document.getElementById('inp-nombre-corp').value.trim();
+    const puesto = document.getElementById('inp-puesto-corp').value.trim();
+    if (!correo || !nombre || !puesto) { mostrarError('Complete todos los campos.'); return; }
+    if (!correo.includes('@'))         { mostrarError('Correo inválido.'); return; }
+    mostrarOverlay('Validando credenciales...');
+    google.script.run
+      .withSuccessHandler(res => {
+        ocultarOverlay();
+        if (!res.ok) { mostrarError(res.msg); return; }
+        SESION = { tipo: 'PLANTILLA', correo, nombre, puesto, tokenFila: null };
+        iniciarPrueba();
+      })
+      .withFailureHandler(e => { ocultarOverlay(); mostrarError('Error de conexión: ' + e.message); })
+      .validarCorreoCorporativo(correo);
+  }
+
+  function loginCand() {
+    const token = document.getElementById('inp-token').value.trim().toUpperCase();
+    if (!token) { mostrarError('Ingrese su código de acceso.'); return; }
+    mostrarOverlay('Validando código...');
+    google.script.run
+      .withSuccessHandler(res => {
+        ocultarOverlay();
+        if (!res.ok) { mostrarError(res.msg); return; }
+        SESION = { tipo: 'CANDIDATO', correo: res.correo, nombre: res.nombre, puesto: res.puesto, tokenFila: res.fila };
+        iniciarPrueba();
+      })
+      .withFailureHandler(e => { ocultarOverlay(); mostrarError('Error: ' + e.message); })
+      .validarToken(token);
+  }
+
+  function iniciarPrueba() {
+    mostrarOverlay('Cargando evaluación...');
+    const badge = document.getElementById('tb-badge');
+    badge.textContent = SESION.tipo === 'CANDIDATO' ? 'Candidato Externo' : 'Personal Interno';
+    badge.style.display = 'block';
+    google.script.run
+      .withSuccessHandler(bloques => {
+        BLOQUES = bloques;
+        renderBloques();
+        mostrarScreen('screen-prueba');
+        ocultarOverlay();
+        window.scrollTo(0, 0);
+      })
+      .withFailureHandler(e => { ocultarOverlay(); mostrarError('Error cargando la prueba: ' + e.message); })
+      .obtenerBloques();
+  }
+
+  function renderBloques() {
+    document.getElementById('bloques-container').innerHTML = BLOQUES.map(b => {
+      const rows = b.adj.map(adj => {
+        const k = b.id + '_' + adj.replace(/\s+/g,'_');
+        return '<tr>' +
+          '<td style="text-align:center;width:36px;"><input type="radio" class="radio-mas" name="mas_' + b.id + '" value="' + adj + '" id="mas_' + k + '" onchange="onSel(' + b.id + ')"></td>' +
+          '<td style="text-align:center;width:36px;"><input type="radio" class="radio-menos" name="menos_' + b.id + '" value="' + adj + '" id="menos_' + k + '" onchange="onSel(' + b.id + ')"></td>' +
+          '<td class="adj-nombre">' + adj + '</td>' +
+          '</tr>';
+      }).join('');
+      return '<div class="bloque-card" id="bloque-' + b.id + '">' +
+        '<div class="bloque-header"><div class="blq-left"><span class="blq-num">BLQ-' + String(b.id).padStart(2,'0') + '</span><span class="blq-title">Bloque ' + b.id + '</span></div><span class="blq-check" id="check-' + b.id + '">○</span></div>' +
+        '<div class="bloque-body"><table class="adj-tabla"><thead><tr><th class="th-mas">MÁS</th><th class="th-menos">MENOS</th><th class="th-adj">Adjetivo</th></tr></thead><tbody>' + rows + '</tbody></table></div>' +
+        '</div>';
+    }).join('');
+  }
+
+  function onSel(id) {
+    const mV = (document.querySelector('input[name="mas_'   + id + '"]:checked') || {}).value;
+    const lV = (document.querySelector('input[name="menos_' + id + '"]:checked') || {}).value;
+    if (mV && lV && mV === lV) {
+      BLOQUES.find(b => b.id === id).adj.forEach(adj => {
+        const mk = document.getElementById('mas_'   + id + '_' + adj.replace(/\s+/g,'_'));
+        const lk = document.getElementById('menos_' + id + '_' + adj.replace(/\s+/g,'_'));
+        if (mk && mk.value === mV && mk.checked) mk.checked = false;
+        if (lk && lk.value === lV && lk.checked) lk.checked = false;
+      });
+    }
+    const masEl   = document.querySelector('input[name="mas_'   + id + '"]:checked');
+    const menosEl = document.querySelector('input[name="menos_' + id + '"]:checked');
+    const card  = document.getElementById('bloque-' + id);
+    const check = document.getElementById('check-'  + id);
+    if (masEl && menosEl) {
+      RESPUESTAS[id] = { mas: masEl.value, menos: menosEl.value };
+      card.classList.add('completado'); card.classList.remove('incompleto-error');
+      check.textContent = '✓';
+    } else {
+      delete RESPUESTAS[id];
+      card.classList.remove('completado');
+      check.textContent = '○';
+    }
+    const c = Object.keys(RESPUESTAS).length, t = BLOQUES.length, p = Math.round(c/t*100);
+    document.getElementById('prog-txt').textContent  = c + ' / ' + t + ' bloques';
+    document.getElementById('prog-fill').style.width = p + '%';
+    document.getElementById('prog-pct').textContent  = p + '%';
+  }
+
+  function enviarRespuestas() {
+    const inc = BLOQUES.filter(b => !RESPUESTAS[b.id]).map(b => b.id);
+    if (inc.length > 0) {
+      document.getElementById('alerta-inc').style.display = 'block';
+      inc.forEach(id => document.getElementById('bloque-' + id).classList.add('incompleto-error'));
+      document.getElementById('bloque-' + inc[0]).scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+    document.getElementById('alerta-inc').style.display = 'none';
+    document.getElementById('btn-enviar').disabled = true;
+    mostrarOverlay('Guardando evaluación...');
+    google.script.run
+      .withSuccessHandler(res => {
+        ocultarOverlay();
+        if (!res.ok) { alert('Error al guardar: ' + res.msg); document.getElementById('btn-enviar').disabled = false; return; }
+        document.getElementById('confirm-nombre').textContent = SESION.nombre || SESION.correo;
+        const now = new Date();
+        document.getElementById('confirm-fecha').textContent = 'Registrado · ' + now.toLocaleDateString('es-MX') + ' ' + now.toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'});
+        mostrarScreen('screen-confirm');
+        window.scrollTo(0, 0);
+      })
+      .withFailureHandler(e => { ocultarOverlay(); alert('Error de conexión: ' + e.message); document.getElementById('btn-enviar').disabled = false; })
+      .guardarRespuestas({
+        tipo: SESION.tipo, correo: SESION.correo, nombre: SESION.nombre,
+        puesto: SESION.puesto, tokenFila: SESION.tokenFila,
+        respuestas: BLOQUES.map(b => ({ bloque: b.id, mas: RESPUESTAS[b.id].mas, menos: RESPUESTAS[b.id].menos }))
+      });
+  }
+
+  function mostrarScreen(id) { document.querySelectorAll('.screen').forEach(s => s.classList.remove('active')); document.getElementById(id).classList.add('active'); }
+  function mostrarOverlay(msg) { document.getElementById('overlay-msg').textContent = msg || 'Procesando...'; document.getElementById('overlay').classList.add('visible'); }
+  function ocultarOverlay() { document.getElementById('overlay').classList.remove('visible'); }
+</script>
+</body>
+</html>
