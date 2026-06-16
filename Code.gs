@@ -64,7 +64,9 @@ function validarCorreoCorporativo(correo) {
 
     const datos = hoja.getDataRange().getValues();
     for (let i = 1; i < datos.length; i++) {
-      if (String(datos[i][0]).trim().toLowerCase() === dominio) {
+      // normalizar: quitar @ si está guardado como @dominio.com
+      const stored = String(datos[i][0]).trim().toLowerCase().replace(/^@/, '');
+      if (stored === dominio) {
         if (_yaRespondio(correo)) return {ok: false, msg: "Este correo ya completó la evaluación.", repetido: true};
         return {ok: true, tipo: "PLANTILLA", correo: correo, nombre: "", puesto: ""};
       }
