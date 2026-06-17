@@ -223,6 +223,49 @@
     .comb-lbl-lim { color: #B45309; }
     .comb-val { font-size: 12.5px; line-height: 1.55; color: var(--g700); }
 
+    /* ══ PANEL CAPITAL HUMANO ══ */
+    .admin-outer { max-width: 820px; margin: 0 auto; padding: 28px 16px 60px; }
+    .admin-hdr { background: var(--wh); border-radius: var(--rlg); box-shadow: var(--sh); overflow: hidden; margin-bottom: 20px; }
+    .admin-hdr-body { padding: 18px 24px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
+    .admin-hdr-title { font-family: 'Sora', sans-serif; font-size: 16px; font-weight: 900; color: var(--azdk); }
+    .admin-hdr-sub { font-size: 12px; color: var(--g500); margin-top: 3px; }
+    .admin-count-badge { background: var(--azdk); color: #fff; font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 700; padding: 5px 14px; border-radius: 20px; }
+    .admin-cards { display: flex; flex-direction: column; gap: 12px; }
+    .acard { background: var(--wh); border-radius: var(--rlg); box-shadow: var(--sh); overflow: hidden; }
+    .acard-hdr { padding: 16px 20px; display: flex; align-items: center; gap: 14px; cursor: pointer; user-select: none; transition: background var(--t); }
+    .acard-hdr:hover { background: var(--g50); }
+    .acard-badge { width: 52px; height: 52px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Sora', sans-serif; font-size: 16px; font-weight: 900; color: #fff; flex-shrink: 0; letter-spacing: -1px; }
+    .acard-info { flex: 1; min-width: 0; }
+    .acard-nombre { font-family: 'Sora', sans-serif; font-size: 15px; font-weight: 800; color: var(--azdk); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .acard-meta { display: flex; align-items: center; gap: 7px; margin-top: 4px; flex-wrap: wrap; }
+    .acard-perf { font-family: 'Sora', sans-serif; font-size: 12px; font-weight: 700; }
+    .acard-arrow { font-size: 16px; color: var(--g400); flex-shrink: 0; transition: transform var(--t); }
+    .acard-arrow.open { transform: rotate(180deg); }
+    .acard-body { border-top: 1px solid var(--g100); padding: 0 20px 20px; display: none; }
+    .acard-body.open { display: block; }
+    .acard-section { margin-top: 16px; }
+    .acard-sec-title { font-family: 'Sora', sans-serif; font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: .7px; color: var(--g400); margin-bottom: 8px; }
+    .acard-text { font-size: 13px; line-height: 1.7; color: var(--g700); }
+    .acard-tag { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 700; color: var(--g400); letter-spacing: .5px; text-transform: uppercase; display: inline-block; background: var(--g100); padding: 2px 8px; border-radius: 4px; margin-bottom: 6px; }
+    .acard-grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 16px; }
+    .acard-mini { background: var(--g50); border-radius: 8px; padding: 12px 14px; }
+    .acard-mini-lbl { font-family: 'Sora', sans-serif; font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: .6px; margin-bottom: 6px; }
+    .acard-mini-lbl.vd { color: var(--vd2); }
+    .acard-mini-lbl.am { color: #B45309; }
+    .acard-mini-lbl.az { color: var(--az2); }
+    .acard-mini-lbl.rj { color: var(--rj); }
+    .acard-mini-lbl.mas { color: var(--mas); }
+    .acard-mini-lbl.menos { color: var(--menos); }
+    .acard-mini-val { font-size: 12.5px; line-height: 1.6; color: var(--g700); }
+    .acard-fa-list { list-style: none; display: flex; flex-direction: column; gap: 5px; }
+    .acard-fa-list li { font-size: 12.5px; color: var(--g700); padding-left: 12px; position: relative; }
+    .acard-fa-list li::before { content: '—'; position: absolute; left: 0; color: var(--g400); }
+    .acard-combs { margin-top: 16px; display: flex; flex-direction: column; gap: 8px; }
+    .acard-comb { background: var(--g50); border-radius: 8px; padding: 12px 14px; }
+    .acard-comb-nombre { font-family: 'Sora', sans-serif; font-size: 13px; font-weight: 800; color: var(--azdk); margin-bottom: 8px; }
+    .acard-comb-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    @media (max-width: 600px) { .acard-grid2, .acard-comb-row { grid-template-columns: 1fr; } }
+
     /* ══ GRACIAS (usuario regular) ══ */
     .gracias-outer { min-height: calc(100vh - 52px); display: flex; align-items: center; justify-content: center; padding: 40px 16px; }
     .gracias-card { width: 100%; max-width: 460px; background: var(--wh); border-radius: var(--rlg); box-shadow: var(--shlg); overflow: hidden; }
@@ -329,6 +372,7 @@
           <div class="solu-tabs">
             <button class="solu-tab active" id="tab-corp" onclick="switchTab('corp')">Personal Interno</button>
             <button class="solu-tab" id="tab-cand" onclick="switchTab('cand')">Candidato Externo</button>
+            <button class="solu-tab" id="tab-ch" onclick="switchTab('ch')">Capital Humano</button>
           </div>
           <div id="form-corp">
             <div class="campo">
@@ -353,6 +397,13 @@
                      oninput="this.value=this.value.toUpperCase()">
             </div>
             <button class="btn-solu" onclick="loginCand()">Validar Código <span>→</span></button>
+          </div>
+          <div id="form-ch" style="display:none;">
+            <div class="campo">
+              <label class="clabel">Correo Capital Humano <span class="req">*</span></label>
+              <input class="cinput" type="email" id="inp-correo-ch" placeholder="tu@ssolu.com.mx" autocomplete="off">
+            </div>
+            <button class="btn-solu" onclick="loginCH()" style="background:var(--azdk)">Acceder al Panel <span>→</span></button>
           </div>
           <div class="msg-error" id="msg-error"></div>
         </div>
@@ -549,7 +600,24 @@
     </div>
   </div>
 
-  <!-- ══ SCREEN 4 — GRACIAS (usuarios regulares) ══ -->
+  <!-- ══ SCREEN 4 — PANEL CAPITAL HUMANO ══ -->
+  <div class="screen" id="screen-admin">
+    <div class="admin-outer">
+      <div class="admin-hdr">
+        <div class="card-colorbar" style="background:var(--azdk)"></div>
+        <div class="admin-hdr-body">
+          <div>
+            <div class="admin-hdr-title">Panel de Resultados DISC</div>
+            <div class="admin-hdr-sub">Acceso exclusivo Capital Humano · SOLU</div>
+          </div>
+          <div class="admin-count-badge" id="admin-count">0 evaluaciones</div>
+        </div>
+      </div>
+      <div class="admin-cards" id="admin-cards"></div>
+    </div>
+  </div>
+
+  <!-- ══ SCREEN 5 — GRACIAS (usuarios regulares) ══ -->
   <div class="screen" id="screen-gracias">
     <div class="gracias-outer">
       <div class="gracias-card">
@@ -582,10 +650,10 @@
   var SVG_CIR = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.4)" stroke-width="2"><circle cx="12" cy="12" r="9"/></svg>';
 
   function switchTab(t) {
-    document.getElementById('tab-corp').classList.toggle('active', t === 'corp');
-    document.getElementById('tab-cand').classList.toggle('active', t === 'cand');
-    document.getElementById('form-corp').style.display = t === 'corp' ? 'block' : 'none';
-    document.getElementById('form-cand').style.display = t === 'cand' ? 'block' : 'none';
+    ['corp','cand','ch'].forEach(function(x) {
+      document.getElementById('tab-' + x).classList.toggle('active', x === t);
+      document.getElementById('form-' + x).style.display = x === t ? 'block' : 'none';
+    });
     document.getElementById('msg-error').style.display = 'none';
   }
 
@@ -722,7 +790,7 @@
           document.getElementById('btn-enviar').disabled = false;
           return;
         }
-        mostrarResultados(res.disc);
+        mostrarResultados();
       })
       .withFailureHandler(function(e) {
         ocultarOverlay();
@@ -732,86 +800,103 @@
       .guardarRespuestas(payload);
   }
 
-  function mostrarResultados(d) {
-    var esAdmin = (d && d.esAdmin) || SESION.esAdmin;
-    if (!esAdmin) {
-      document.getElementById('gracias-nombre').textContent =
-        SESION.nombre ? 'Gracias, ' + SESION.nombre + '.' : 'Gracias por completar la evaluación.';
-      mostrarScreen('screen-gracias');
-      window.scrollTo(0, 0);
+  function mostrarResultados() {
+    document.getElementById('gracias-nombre').textContent =
+      SESION.nombre ? 'Gracias, ' + SESION.nombre + '.' : 'Gracias por completar la evaluación.';
+    mostrarScreen('screen-gracias');
+    window.scrollTo(0, 0);
+  }
+
+  function loginCH() {
+    var correo = document.getElementById('inp-correo-ch').value.trim();
+    if (!correo || !correo.includes('@')) { mostrarError('Correo inválido.'); return; }
+    mostrarOverlay('Verificando acceso...');
+    google.script.run
+      .withSuccessHandler(function(res) {
+        ocultarOverlay();
+        if (!res.ok) { mostrarError(res.msg); return; }
+        renderAdminPanel(res.datos);
+        mostrarScreen('screen-admin');
+        window.scrollTo(0, 0);
+      })
+      .withFailureHandler(function(e) { ocultarOverlay(); mostrarError('Error: ' + e.message); })
+      .accederPanelCH(correo);
+  }
+
+  function renderAdminPanel(datos) {
+    document.getElementById('admin-count').textContent = datos.length + ' evaluacion' + (datos.length !== 1 ? 'es' : '');
+    if (datos.length === 0) {
+      document.getElementById('admin-cards').innerHTML =
+        '<div style="text-align:center;padding:48px;color:var(--g400);font-size:14px">No hay evaluaciones registradas aún.</div>';
       return;
     }
-
-    var now = new Date();
-    document.getElementById('res-nombre').textContent = SESION.nombre || SESION.correo;
-    document.getElementById('res-tipo').textContent   = SESION.tipo === 'CANDIDATO' ? 'Candidato Externo' : 'Personal Interno';
-    document.getElementById('res-fecha').textContent  = now.toLocaleDateString('es-MX') + ' ' + now.toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'});
-
-    // Barras DISC
-    var maxRef = 12;
-    document.getElementById('disc-bars').innerHTML = ['D','I','S','C'].map(function(f) {
-      var v   = d.neto[f];
-      var pct = Math.max(4, Math.min(100, (v + maxRef) / (maxRef * 2) * 100));
-      var col = DISC_COLORES[f];
-      var sgn = v > 0 ? '+' : '';
-      return '<div class="disc-bar-row">' +
-        '<div class="disc-bar-label">' + DISC_LABELS[f] + '</div>' +
-        '<div class="disc-bar-track"><div class="disc-bar-fill" data-pct="' + pct + '" style="background:' + col + '"></div></div>' +
-        '<div class="disc-bar-val" style="color:' + col + '">' + sgn + v + '</div>' +
-      '</div>';
+    document.getElementById('admin-cards').innerHTML = datos.map(function(d, i) {
+      return renderAdminCard(d, i);
     }).join('');
-    setTimeout(function() {
-      document.querySelectorAll('.disc-bar-fill').forEach(function(el) {
-        el.style.width = el.dataset.pct + '%';
-      });
-    }, 120);
+  }
 
-    // MÁS / MENOS
-    document.getElementById('graf-mas-titulo').textContent   = d.textoGrafM || '—';
-    document.getElementById('graf-mas-texto').textContent    = d.textoM     || '—';
-    document.getElementById('graf-menos-titulo').textContent = d.textoGrafL || '—';
-    document.getElementById('graf-menos-texto').textContent  = d.textoL     || '—';
+  function renderAdminCard(d, i) {
+    var key    = (d.perfKey || 'D');
+    var col    = ({D:'#0d5a7a', I:'#F26D5B', S:'#22C55E', C:'#55B6E3'})[key[0]] || '#0d5a7a';
+    var tipo   = d.tipo === 'PLANTILLA' ? 'Interno' : 'Candidato';
+    var fLista = (d.fortalezas||[]).map(function(f){ return '<li>' + f + '</li>'; }).join('');
+    var aLista = (d.areas||[]).map(function(a){ return '<li>' + a + '</li>'; }).join('');
+    var combsH = (d.combs||[]).filter(function(c){ return c && c.nombre; }).map(function(c) {
+      return '<div class="acard-comb">' +
+        '<div class="acard-comb-nombre">' + c.nombre + '</div>' +
+        '<div class="acard-comb-row">' +
+          '<div><div class="acard-mini-lbl vd">Motivadores</div><div class="acard-mini-val">' + (c.deseos||'—') + '</div></div>' +
+          '<div><div class="acard-mini-lbl am">Limitaciones</div><div class="acard-mini-val">' + (c.limit||'—') + '</div></div>' +
+        '</div></div>';
+    }).join('');
 
-    // Perfil
-    var topColor = DISC_COLORES[d.top] || '#0d5a7a';
-    document.getElementById('profile-colorbar').style.background  = topColor;
-    document.getElementById('profile-badge-big').textContent      = d.key || d.top;
-    document.getElementById('profile-badge-big').style.background = topColor;
-    document.getElementById('profile-badge-big').style.boxShadow  = '0 6px 20px ' + topColor + '55';
-    document.getElementById('profile-key').textContent             = 'Perfil ' + (d.key || d.top);
-    document.getElementById('profile-nombre').textContent          = d.perfil.nombre   || '—';
-    document.getElementById('profile-nombre').style.color          = topColor;
-    document.getElementById('profile-segmento').textContent        = d.perfil.segmento || '';
-    document.getElementById('profile-resumen').textContent         = d.perfil.resumen  || '';
-    document.getElementById('profile-resumen').style.borderColor   = topColor;
-    document.getElementById('profile-desc').textContent            = d.perfil.desc     || '—';
-    document.getElementById('profile-caract').textContent          = d.perfil.caract   || '';
-
-    // Motivadores / Limitaciones / Recomendaciones / Alertas
-    document.getElementById('res-motivadores').textContent     = d.perfil.motivadores     || '—';
-    document.getElementById('res-limitaciones').textContent    = d.perfil.limitaciones    || '—';
-    document.getElementById('res-recomendaciones').textContent = d.perfil.recomendaciones || '—';
-    document.getElementById('res-alertas').textContent         = d.perfil.alertas         || '—';
-
-    // Fortalezas / Áreas
-    document.getElementById('res-fortalezas').innerHTML = (d.fortalezas||[]).map(function(f){ return '<li>' + f + '</li>'; }).join('');
-    document.getElementById('res-areas').innerHTML      = (d.areas||[]).map(function(a){ return '<li>' + a + '</li>'; }).join('');
-
-    // Perfiles Combinados
-    var combsHtml = (d.combs||[]).filter(function(c){ return c && c.nombre; }).map(function(c) {
-      return '<div class="comb-item">' +
-        '<div class="comb-nombre">' + c.nombre + '</div>' +
-        '<div class="comb-row">' +
-          '<div><div class="comb-lbl comb-lbl-mot">Motivadores</div><div class="comb-val">' + (c.deseos||'—') + '</div></div>' +
-          '<div><div class="comb-lbl comb-lbl-lim">Limitaciones</div><div class="comb-val">' + (c.limit||'—') + '</div></div>' +
+    return '<div class="acard">' +
+      '<div class="acard-hdr" onclick="toggleCard(' + i + ')">' +
+        '<div class="acard-badge" style="background:' + col + ';box-shadow:0 4px 14px ' + col + '44">' + key + '</div>' +
+        '<div class="acard-info">' +
+          '<div class="acard-nombre">' + (d.nombre||'—') + '</div>' +
+          '<div class="acard-meta">' +
+            '<span class="res-tipo-badge">' + tipo + '</span>' +
+            (d.fecha ? '<span class="res-fecha-txt">' + d.fecha + '</span>' : '') +
+            '<span class="acard-perf" style="color:' + col + '">' + (d.perfNombre||key) + '</span>' +
+          '</div>' +
         '</div>' +
-      '</div>';
-    }).join('');
-    document.getElementById('res-combs').innerHTML = combsHtml ||
-      '<p class="comb-val" style="color:var(--g400);padding:8px 0">Sin perfiles combinados adicionales.</p>';
+        '<div class="acard-arrow" id="arrow-' + i + '">▾</div>' +
+      '</div>' +
+      '<div class="acard-body" id="abody-' + i + '">' +
+        '<div class="acard-section">' +
+          '<div class="acard-tag" style="color:' + col + '">Perfil ' + key + ' — ' + (d.segmento||'') + '</div>' +
+          (d.resumen ? '<div class="acard-text" style="border-left:3px solid ' + col + ';padding-left:12px;margin-bottom:10px;font-weight:600">' + d.resumen + '</div>' : '') +
+          (d.desc    ? '<div class="acard-text">' + d.desc + '</div>' : '') +
+          (d.caract  ? '<div class="acard-text" style="color:var(--g500);font-style:italic;margin-top:8px">' + d.caract + '</div>' : '') +
+        '</div>' +
+        '<div class="acard-grid2">' +
+          '<div class="acard-mini"><div class="acard-mini-lbl mas">MÁS — ' + (d.textoGrafM||'Conducta Natural') + '</div><div class="acard-mini-val">' + (d.textoM||'—') + '</div></div>' +
+          '<div class="acard-mini"><div class="acard-mini-lbl menos">MENOS — ' + (d.textoGrafL||'Conducta Adaptativa') + '</div><div class="acard-mini-val">' + (d.textoL||'—') + '</div></div>' +
+        '</div>' +
+        '<div class="acard-grid2">' +
+          '<div class="acard-mini"><div class="acard-mini-lbl vd">Motivadores</div><div class="acard-mini-val">' + (d.motivadores||'—') + '</div></div>' +
+          '<div class="acard-mini"><div class="acard-mini-lbl am">Limitaciones</div><div class="acard-mini-val">' + (d.limitaciones||'—') + '</div></div>' +
+        '</div>' +
+        (fLista || aLista ? '<div class="acard-grid2">' +
+          (fLista ? '<div class="acard-mini"><div class="acard-mini-lbl vd">Fortalezas</div><ul class="acard-fa-list">' + fLista + '</ul></div>' : '') +
+          (aLista ? '<div class="acard-mini"><div class="acard-mini-lbl am">Áreas de Desarrollo</div><ul class="acard-fa-list">' + aLista + '</ul></div>' : '') +
+        '</div>' : '') +
+        '<div class="acard-grid2">' +
+          '<div class="acard-mini"><div class="acard-mini-lbl az">Recomendaciones</div><div class="acard-mini-val">' + (d.recomendaciones||'—') + '</div></div>' +
+          '<div class="acard-mini"><div class="acard-mini-lbl rj">Alertas</div><div class="acard-mini-val">' + (d.alertas||'—') + '</div></div>' +
+        '</div>' +
+        (combsH ? '<div class="acard-section"><div class="acard-sec-title">Perfiles Combinados</div><div class="acard-combs">' + combsH + '</div></div>' : '') +
+      '</div>' +
+    '</div>';
+  }
 
-    mostrarScreen('screen-confirm');
-    window.scrollTo(0, 0);
+  function toggleCard(i) {
+    var body  = document.getElementById('abody-' + i);
+    var arrow = document.getElementById('arrow-' + i);
+    var open  = body.classList.toggle('open');
+    arrow.classList.toggle('open', open);
+    arrow.textContent = open ? '▴' : '▾';
   }
 
   function mostrarScreen(id) {

@@ -286,7 +286,7 @@ const HEADS_CANDIDATOS    = ['Marca temporal','ID de proceso','Nombre completo',
 const HEADS_CONCENTRADO   = ['TIPO'].concat(HEADS_PLANTILLA);
 const HEADS_VALIDACION    = ['Marca temporal','Correo','Nombre','Tipo','ESTADO','DETALLE'];
 const HEADS_CALCULOS      = ['TIPO','Fecha','Correo','Nombre','Área','ID_GENERADO','D_MAS','I_MAS','S_MAS','C_MAS','D_MENOS','I_MENOS','S_MENOS','C_MENOS','D','I','S','C','Dom','D_M%','I_M%','S_M%','C_M%','D_L%','I_L%','S_L%','C_L%','D_T%','I_T%','S_T%','C_T%'];
-const HEADS_INTERPRETACION = ['TIPO','Correo','NOMBRE','Perfil DISC','Combinación','Segmento Funcional','Resumen Ejecutivo','D_TOTAL','I_TOTAL','S_TOTAL','C_TOTAL','Características Completas','Motivadores','Limitaciones','Recomendaciones RH','Alertas','Texto_T','Texto_M','Texto_L','D_T%','I_T%','S_T%','C_T%','D_M%','I_M%','S_M%','C_M%','D_L%','I_L%','S_L%','C_L%','Texto_Grafica_T','Texto_Grafica_M','Texto_Grafica_L','Comb1_Nombre','Comb1_Caract','Comb1_Limit','Comb1_Deseos','Comb2_Nombre','Comb2_Caract','Comb2_Limit','Comb2_Deseos','Comb3_Nombre','Comb3_Caract','Comb3_Limit','Comb3_Deseos'];
+const HEADS_INTERPRETACION = ['TIPO','Correo','NOMBRE','Perfil DISC','Combinación','Segmento Funcional','Resumen Ejecutivo','D_TOTAL','I_TOTAL','S_TOTAL','C_TOTAL','Características Completas','Motivadores','Limitaciones','Recomendaciones RH','Alertas','Texto_T','Texto_M','Texto_L','D_T%','I_T%','S_T%','C_T%','D_M%','I_M%','S_M%','C_M%','D_L%','I_L%','S_L%','C_L%','Texto_Grafica_T','Texto_Grafica_M','Texto_Grafica_L','Comb1_Nombre','Comb1_Caract','Comb1_Limit','Comb1_Deseos','Comb2_Nombre','Comb2_Caract','Comb2_Limit','Comb2_Deseos','Comb3_Nombre','Comb3_Caract','Comb3_Limit','Comb3_Deseos','Fecha','Descripcion','Fortalezas','Areas_Desarrollo'];
 
 // ── ENTRY POINT ───────────────────────────────────────────────────────────────
 function doGet() {
@@ -430,7 +430,8 @@ function guardarRespuestas(payload) {
       disc.textoGrafT, disc.textoGrafM, disc.textoGrafL,
       c1.nombre||'', c1.caract||'', c1.limit||'', c1.deseos||'',
       c2.nombre||'', c2.caract||'', c2.limit||'', c2.deseos||'',
-      c3.nombre||'', c3.caract||'', c3.limit||'', c3.deseos||''
+      c3.nombre||'', c3.caract||'', c3.limit||'', c3.deseos||'',
+      fecha, disc.perfil.desc||'', disc.fortalezas.join(' · '), disc.areas.join(' · ')
     ]);
 
     // Marcar token como usado
@@ -444,8 +445,7 @@ function guardarRespuestas(payload) {
 
     SpreadsheetApp.flush();
     Logger.log("Guardado: " + payload.nombre + " — " + disc.perfil.nombre + " [" + tipo + "]");
-    disc.esAdmin = _esUsuarioCH(payload.correo);
-    return {ok: true, msg: "Evaluación guardada.", disc: disc};
+    return {ok: true, msg: "Evaluación guardada."};
 
   } catch(e) {
     Logger.log("Error guardarRespuestas: " + e);
@@ -580,6 +580,55 @@ function inicializarHojasApp() {
     "2. Agrega dominios en '" + CFG_APP.HOJA_DOMINIOS + "'\n" +
     "3. Publica el webapp (Nueva versión)"
   );
+}
+
+// ── PANEL CAPITAL HUMANO ──────────────────────────────────────────────────────
+function accederPanelCH(correo) {
+  try {
+    correo = String(correo).trim().toLowerCase();
+    if (!_esUsuarioCH(correo)) return {ok: false, msg: "Acceso no autorizado. Verifica que tu correo esté registrado en USUARIOS_CH."};
+
+    const hInt = _ss().getSheetByName(CFG_APP.HOJA_INTERPRETACION);
+    if (!hInt || hInt.getLastRow() < 2) return {ok: true, datos: []};
+
+    const datos = hInt.getRange(2, 1, hInt.getLastRow()-1, hInt.getLastColumn()).getValues();
+    const resultado = datos
+      .filter(function(r){ return r[2]; })
+      .map(function(r) {
+        return {
+          tipo:           String(r[0]||''),
+          correo:         String(r[1]||''),
+          nombre:         String(r[2]||''),
+          perfNombre:     String(r[3]||''),
+          perfKey:        String(r[4]||''),
+          segmento:       String(r[5]||''),
+          resumen:        String(r[6]||''),
+          caract:         String(r[11]||''),
+          motivadores:    String(r[12]||''),
+          limitaciones:   String(r[13]||''),
+          recomendaciones:String(r[14]||''),
+          alertas:        String(r[15]||''),
+          textoM:         String(r[17]||''),
+          textoL:         String(r[18]||''),
+          textoGrafM:     String(r[32]||''),
+          textoGrafL:     String(r[33]||''),
+          combs: [
+            {nombre:String(r[34]||''), caract:String(r[35]||''), limit:String(r[36]||''), deseos:String(r[37]||'')},
+            {nombre:String(r[38]||''), caract:String(r[39]||''), limit:String(r[40]||''), deseos:String(r[41]||'')},
+            {nombre:String(r[42]||''), caract:String(r[43]||''), limit:String(r[44]||''), deseos:String(r[45]||'')}
+          ],
+          fecha:          String(r[46]||''),
+          desc:           String(r[47]||''),
+          fortalezas:     r[48] ? String(r[48]).split(' · ').filter(Boolean) : [],
+          areas:          r[49] ? String(r[49]).split(' · ').filter(Boolean) : []
+        };
+      });
+
+    return {ok: true, datos: resultado};
+  } catch(e) {
+    Logger.log("Error accederPanelCH: " + e);
+    return {ok: false, msg: "Error al cargar resultados."};
+  }
 }
 
 // ── DIAGNÓSTICO: ejecuta esta función desde el editor para verificar detección CH ──
