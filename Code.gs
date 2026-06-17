@@ -445,7 +445,7 @@ function guardarRespuestas(payload) {
 
     SpreadsheetApp.flush();
     Logger.log("Guardado: " + payload.nombre + " — " + disc.perfil.nombre + " [" + tipo + "]");
-    return {ok: true, msg: "Evaluación guardada."};
+    return {ok: true, msg: "Evaluación guardada.", disc: disc};
 
   } catch(e) {
     Logger.log("Error guardarRespuestas: " + e);
