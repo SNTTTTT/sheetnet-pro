@@ -601,6 +601,33 @@ function diagnosticoCH() {
   Logger.log("=== Prueba _esUsuarioCH('" + correoTest + "') → " + _esUsuarioCH(correoTest) + " ===");
 }
 
+// ── DIAGNÓSTICO COMPLETO: prueba el flujo de login completo ──────────────────
+function diagnosticoLogin() {
+  var correoTest = "isaac.galindo@ssolu.com.mx"; // cambia por el tuyo
+
+  // 1. Verifica dominios
+  var ss    = _ss();
+  var hDom  = ss.getSheetByName(CFG_APP.HOJA_DOMINIOS);
+  if (!hDom) { Logger.log("ERROR: No existe la hoja Dominios_Permitidos"); return; }
+  var domData = hDom.getDataRange().getValues();
+  var dominio = correoTest.split('@')[1];
+  Logger.log("Buscando dominio: [" + dominio + "]");
+  var dominioEncontrado = false;
+  for (var i = 1; i < domData.length; i++) {
+    var stored = String(domData[i][0]).trim().toLowerCase().replace(/^@/, '');
+    Logger.log("  Dominio en hoja fila " + (i+1) + ": [" + stored + "]");
+    if (stored === dominio) { dominioEncontrado = true; break; }
+  }
+  Logger.log("Dominio encontrado: " + dominioEncontrado);
+
+  // 2. Verifica CH
+  Logger.log("_esUsuarioCH: " + _esUsuarioCH(correoTest));
+
+  // 3. Simula validarCorreoCorporativo completo
+  var resultado = validarCorreoCorporativo(correoTest);
+  Logger.log("validarCorreoCorporativo → ok=" + resultado.ok + " esAdmin=" + resultado.esAdmin + " msg=" + resultado.msg);
+}
+
 // ── ADMIN: SINCRONIZAR TOKENS DESDE NUEVOS_INGRESOS ──────────────────────────
 function sincronizarTokensDesdeNuevosIngresos() {
   try {
