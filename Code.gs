@@ -444,6 +444,7 @@ function guardarRespuestas(payload) {
 
     SpreadsheetApp.flush();
     Logger.log("Guardado: " + payload.nombre + " — " + disc.perfil.nombre + " [" + tipo + "]");
+    disc.esAdmin = _esUsuarioCH(payload.correo);
     return {ok: true, msg: "Evaluación guardada.", disc: disc};
 
   } catch(e) {

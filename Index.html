@@ -191,6 +191,38 @@
 
     .res-footer { text-align: center; font-size: 12px; color: var(--g400); font-family: 'JetBrains Mono', monospace; padding: 4px 0; }
 
+    /* MÁS / MENOS cards */
+    .mm-card { background: var(--wh); border-radius: var(--rlg); box-shadow: var(--sh); overflow: hidden; }
+    .mm-body { padding: 18px 20px; }
+    .mm-tag { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .7px; margin-bottom: 8px; }
+    .mm-mas .mm-tag { color: var(--mas); }
+    .mm-menos .mm-tag { color: var(--menos); }
+    .mm-titulo { font-family: 'Sora', sans-serif; font-size: 13px; font-weight: 800; color: var(--g700); margin-bottom: 8px; }
+    .mm-texto { font-size: 13px; line-height: 1.65; color: var(--g500); }
+
+    /* Perfil extras */
+    .profile-segmento { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--g400); letter-spacing: .5px; margin-top: 3px; }
+    .profile-resumen { font-size: 13.5px; font-weight: 600; color: var(--g700); margin: 12px 0 10px; border-left: 3px solid #0d5a7a; padding-left: 12px; line-height: 1.6; }
+    .profile-caract { font-size: 12.5px; color: var(--g500); font-style: italic; margin-top: 10px; line-height: 1.6; }
+
+    /* fa-card variantes de texto */
+    .fa-text { font-size: 13px; line-height: 1.7; color: var(--g700); }
+    .fa-azul .fa-title { color: var(--az2); }
+    .fa-rojo .fa-title { color: var(--rj); }
+
+    /* Perfiles Combinados */
+    .combs-card { background: var(--wh); border-radius: var(--rlg); box-shadow: var(--sh); overflow: hidden; }
+    .combs-body { padding: 20px 24px; }
+    .combs-sec-title { font-family: 'Sora', sans-serif; font-size: 11px; font-weight: 800; color: var(--g400); text-transform: uppercase; letter-spacing: .8px; margin-bottom: 16px; }
+    .comb-item { padding: 14px 0; border-bottom: 1px solid var(--g100); }
+    .comb-item:last-child { border-bottom: none; padding-bottom: 0; }
+    .comb-nombre { font-family: 'Sora', sans-serif; font-size: 14px; font-weight: 800; color: var(--azdk); margin-bottom: 8px; }
+    .comb-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .comb-lbl { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; margin-bottom: 4px; }
+    .comb-lbl-mot { color: var(--vd2); }
+    .comb-lbl-lim { color: #B45309; }
+    .comb-val { font-size: 12.5px; line-height: 1.55; color: var(--g700); }
+
     /* ══ GRACIAS (usuario regular) ══ */
     .gracias-outer { min-height: calc(100vh - 52px); display: flex; align-items: center; justify-content: center; padding: 40px 16px; }
     .gracias-card { width: 100%; max-width: 460px; background: var(--wh); border-radius: var(--rlg); box-shadow: var(--shlg); overflow: hidden; }
@@ -374,7 +406,7 @@
     </div>
   </div>
 
-  <!-- ══ SCREEN 3 — RESULTADOS DISC ══ -->
+  <!-- ══ SCREEN 3 — RESULTADOS DISC (Capital Humano) ══ -->
   <div class="screen" id="screen-confirm">
     <div class="result-outer">
 
@@ -395,16 +427,36 @@
         </div>
       </div>
 
-      <!-- Barras DISC -->
+      <!-- Barras DISC Neto -->
       <div class="disc-card">
         <div class="card-colorbar"></div>
         <div class="disc-body">
-          <div class="disc-sec-title">Puntajes DISC — Netos</div>
+          <div class="disc-sec-title">Puntajes DISC — Neto</div>
           <div id="disc-bars"></div>
         </div>
       </div>
 
-      <!-- Perfil con badge grande -->
+      <!-- MÁS / MENOS -->
+      <div class="fa-grid">
+        <div class="mm-card mm-mas">
+          <div class="card-colorbar" style="background:var(--mas)"></div>
+          <div class="mm-body">
+            <div class="mm-tag">MÁS — Conducta Natural</div>
+            <div class="mm-titulo" id="graf-mas-titulo">—</div>
+            <div class="mm-texto" id="graf-mas-texto">—</div>
+          </div>
+        </div>
+        <div class="mm-card mm-menos">
+          <div class="card-colorbar" style="background:var(--menos)"></div>
+          <div class="mm-body">
+            <div class="mm-tag">MENOS — Conducta Adaptativa</div>
+            <div class="mm-titulo" id="graf-menos-titulo">—</div>
+            <div class="mm-texto" id="graf-menos-texto">—</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Perfil principal -->
       <div class="profile-card">
         <div class="card-colorbar" id="profile-colorbar"></div>
         <div class="profile-body">
@@ -413,13 +465,34 @@
             <div class="profile-meta">
               <div class="profile-key" id="profile-key">—</div>
               <div class="profile-nombre" id="profile-nombre">—</div>
+              <div class="profile-segmento" id="profile-segmento">—</div>
             </div>
           </div>
+          <div class="profile-resumen" id="profile-resumen">—</div>
           <div class="profile-desc" id="profile-desc">—</div>
+          <div class="profile-caract" id="profile-caract"></div>
         </div>
       </div>
 
-      <!-- Fortalezas + Áreas -->
+      <!-- Motivadores / Limitaciones -->
+      <div class="fa-grid">
+        <div class="fa-card fa-verde">
+          <div class="card-colorbar" style="background:var(--vd)"></div>
+          <div class="fa-body">
+            <div class="fa-title">Motivadores</div>
+            <div class="fa-text" id="res-motivadores">—</div>
+          </div>
+        </div>
+        <div class="fa-card fa-amber">
+          <div class="card-colorbar" style="background:var(--am)"></div>
+          <div class="fa-body">
+            <div class="fa-title">Limitaciones</div>
+            <div class="fa-text" id="res-limitaciones">—</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Fortalezas / Áreas -->
       <div class="fa-grid">
         <div class="fa-card fa-verde">
           <div class="card-colorbar" style="background:var(--vd)"></div>
@@ -434,6 +507,33 @@
             <div class="fa-title">Áreas de Desarrollo</div>
             <ul class="fa-list" id="res-areas"></ul>
           </div>
+        </div>
+      </div>
+
+      <!-- Recomendaciones / Alertas -->
+      <div class="fa-grid">
+        <div class="fa-card fa-azul">
+          <div class="card-colorbar" style="background:var(--az)"></div>
+          <div class="fa-body">
+            <div class="fa-title">Recomendaciones</div>
+            <div class="fa-text" id="res-recomendaciones">—</div>
+          </div>
+        </div>
+        <div class="fa-card fa-rojo">
+          <div class="card-colorbar" style="background:var(--rj)"></div>
+          <div class="fa-body">
+            <div class="fa-title">Alertas</div>
+            <div class="fa-text" id="res-alertas">—</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Perfiles Combinados -->
+      <div class="combs-card">
+        <div class="card-colorbar"></div>
+        <div class="combs-body">
+          <div class="combs-sec-title">Análisis de Perfiles Combinados</div>
+          <div id="res-combs"></div>
         </div>
       </div>
 
@@ -633,8 +733,8 @@
   }
 
   function mostrarResultados(d) {
-    // Usuarios regulares (no CH) — solo pantalla de gracias
-    if (!SESION.esAdmin) {
+    var esAdmin = (d && d.esAdmin) || SESION.esAdmin;
+    if (!esAdmin) {
       document.getElementById('gracias-nombre').textContent =
         SESION.nombre ? 'Gracias, ' + SESION.nombre + '.' : 'Gracias por completar la evaluación.';
       mostrarScreen('screen-gracias');
@@ -642,13 +742,12 @@
       return;
     }
 
-    // Capital Humano — resultados completos
     var now = new Date();
     document.getElementById('res-nombre').textContent = SESION.nombre || SESION.correo;
     document.getElementById('res-tipo').textContent   = SESION.tipo === 'CANDIDATO' ? 'Candidato Externo' : 'Personal Interno';
     document.getElementById('res-fecha').textContent  = now.toLocaleDateString('es-MX') + ' ' + now.toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'});
 
-    // Barras — inician en 0, animan después del primer render
+    // Barras DISC
     var maxRef = 12;
     document.getElementById('disc-bars').innerHTML = ['D','I','S','C'].map(function(f) {
       var v   = d.neto[f];
@@ -661,12 +760,17 @@
         '<div class="disc-bar-val" style="color:' + col + '">' + sgn + v + '</div>' +
       '</div>';
     }).join('');
-
     setTimeout(function() {
       document.querySelectorAll('.disc-bar-fill').forEach(function(el) {
         el.style.width = el.dataset.pct + '%';
       });
     }, 120);
+
+    // MÁS / MENOS
+    document.getElementById('graf-mas-titulo').textContent   = d.textoGrafM || '—';
+    document.getElementById('graf-mas-texto').textContent    = d.textoM     || '—';
+    document.getElementById('graf-menos-titulo').textContent = d.textoGrafL || '—';
+    document.getElementById('graf-menos-texto').textContent  = d.textoL     || '—';
 
     // Perfil
     var topColor = DISC_COLORES[d.top] || '#0d5a7a';
@@ -674,13 +778,37 @@
     document.getElementById('profile-badge-big').textContent      = d.key || d.top;
     document.getElementById('profile-badge-big').style.background = topColor;
     document.getElementById('profile-badge-big').style.boxShadow  = '0 6px 20px ' + topColor + '55';
-    document.getElementById('profile-key').textContent            = 'Perfil ' + (d.key || d.top);
-    document.getElementById('profile-nombre').textContent         = d.perfil.nombre;
-    document.getElementById('profile-nombre').style.color         = topColor;
-    document.getElementById('profile-desc').textContent           = d.perfil.desc;
+    document.getElementById('profile-key').textContent             = 'Perfil ' + (d.key || d.top);
+    document.getElementById('profile-nombre').textContent          = d.perfil.nombre   || '—';
+    document.getElementById('profile-nombre').style.color          = topColor;
+    document.getElementById('profile-segmento').textContent        = d.perfil.segmento || '';
+    document.getElementById('profile-resumen').textContent         = d.perfil.resumen  || '';
+    document.getElementById('profile-resumen').style.borderColor   = topColor;
+    document.getElementById('profile-desc').textContent            = d.perfil.desc     || '—';
+    document.getElementById('profile-caract').textContent          = d.perfil.caract   || '';
 
-    document.getElementById('res-fortalezas').innerHTML = d.fortalezas.map(function(f){ return '<li>' + f + '</li>'; }).join('');
-    document.getElementById('res-areas').innerHTML      = d.areas.map(function(a){ return '<li>' + a + '</li>'; }).join('');
+    // Motivadores / Limitaciones / Recomendaciones / Alertas
+    document.getElementById('res-motivadores').textContent     = d.perfil.motivadores     || '—';
+    document.getElementById('res-limitaciones').textContent    = d.perfil.limitaciones    || '—';
+    document.getElementById('res-recomendaciones').textContent = d.perfil.recomendaciones || '—';
+    document.getElementById('res-alertas').textContent         = d.perfil.alertas         || '—';
+
+    // Fortalezas / Áreas
+    document.getElementById('res-fortalezas').innerHTML = (d.fortalezas||[]).map(function(f){ return '<li>' + f + '</li>'; }).join('');
+    document.getElementById('res-areas').innerHTML      = (d.areas||[]).map(function(a){ return '<li>' + a + '</li>'; }).join('');
+
+    // Perfiles Combinados
+    var combsHtml = (d.combs||[]).filter(function(c){ return c && c.nombre; }).map(function(c) {
+      return '<div class="comb-item">' +
+        '<div class="comb-nombre">' + c.nombre + '</div>' +
+        '<div class="comb-row">' +
+          '<div><div class="comb-lbl comb-lbl-mot">Motivadores</div><div class="comb-val">' + (c.deseos||'—') + '</div></div>' +
+          '<div><div class="comb-lbl comb-lbl-lim">Limitaciones</div><div class="comb-val">' + (c.limit||'—') + '</div></div>' +
+        '</div>' +
+      '</div>';
+    }).join('');
+    document.getElementById('res-combs').innerHTML = combsHtml ||
+      '<p class="comb-val" style="color:var(--g400);padding:8px 0">Sin perfiles combinados adicionales.</p>';
 
     mostrarScreen('screen-confirm');
     window.scrollTo(0, 0);
