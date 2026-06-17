@@ -302,10 +302,10 @@
 
     /* ── PRINT ── */
     @media print {
-      .topbar, .btn-print-wrap, .overlay { display: none !important; }
+      .topbar, .btn-print-wrap, #btn-panel-ch-wrap, .overlay { display: none !important; }
       body { background: #fff; }
       .result-outer { padding: 12px; gap: 12px; }
-      .res-hdr-card, .disc-card, .profile-card, .fa-card { box-shadow: none !important; border: 1px solid #e5e7eb; }
+      .res-hdr-card, .disc-card, .profile-card, .fa-card, .mm-card, .combs-card { box-shadow: none !important; border: 1px solid #e5e7eb; }
       .screen:not(#screen-confirm) { display: none !important; }
       #screen-confirm { display: block !important; }
       .fa-grid { grid-template-columns: 1fr 1fr; }
@@ -748,7 +748,7 @@
   function iniciarPrueba() {
     document.getElementById('overlay-name').style.display = 'none';
     mostrarOverlay('Cargando evaluación...');
-    var tipo  = SESION.tipo === 'CANDIDATO' ? 'Candidato' : 'Interno';
+    var tipo  = SESION.esAdmin ? 'Capital Humano' : (SESION.tipo === 'CANDIDATO' ? 'Candidato' : 'Interno');
     var badge = document.getElementById('tb-badge');
     badge.textContent = SESION.nombre ? SESION.nombre + ' · ' + tipo : tipo;
     badge.style.display = 'block';
