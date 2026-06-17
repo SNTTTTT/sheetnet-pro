@@ -48,7 +48,7 @@
     .tb-info { display: flex; flex-direction: column; gap: 1px; }
     .tb-sys { font-family: 'Sora', sans-serif; font-size: 13px; font-weight: 700; color: #fff; line-height: 1; }
     .tb-mod { font-size: 10px; font-weight: 500; color: var(--az); text-transform: uppercase; letter-spacing: .7px; line-height: 1; }
-    .tb-badge { background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.18); color: rgba(255,255,255,.85); font-size: 11px; font-weight: 500; padding: 4px 12px; border-radius: 20px; display: none; }
+    .tb-badge { background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.18); color: rgba(255,255,255,.9); font-size: 11px; font-weight: 600; padding: 4px 12px; border-radius: 20px; display: none; max-width: 210px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
     .screen { display: none; }
     .screen.active { display: block; }
@@ -107,15 +107,17 @@
     .leg-item.leg-menos { color: var(--menos); }
     .alerta-inc { background: #FFFBEB; border: 1.5px solid var(--am); color: #92400E; padding: 12px 16px; border-radius: var(--r); font-size: 13px; font-weight: 600; margin-bottom: 16px; display: none; }
     .bloques-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 14px; margin-bottom: 30px; }
-    .bloque-card { background: var(--wh); border: 1.5px solid var(--g200); border-radius: var(--rlg); overflow: hidden; box-shadow: var(--sh); transition: border-color var(--t), box-shadow var(--t); }
+
+    /* Bloque con stagger */
+    .bloque-card { background: var(--wh); border: 1.5px solid var(--g200); border-radius: var(--rlg); overflow: hidden; box-shadow: var(--sh); transition: border-color var(--t), box-shadow var(--t); animation: fadeUpBlock .35s ease both; animation-delay: calc(var(--bi, 0) * 38ms); }
+    @keyframes fadeUpBlock { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
     .bloque-card.completado { border-color: var(--vd); box-shadow: var(--sh), 0 0 0 1px rgba(34,197,94,.12); }
     .bloque-card.incompleto-error { border-color: var(--rj); box-shadow: var(--sh), 0 0 0 3px rgba(239,68,68,.12); }
     .bloque-header { background: var(--azdk); padding: 8px 14px; display: flex; align-items: center; justify-content: space-between; }
     .blq-left { display: flex; align-items: center; gap: 8px; }
     .blq-num { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 700; color: var(--az); letter-spacing: .5px; }
     .blq-title { font-family: 'Sora', sans-serif; font-size: 12px; font-weight: 700; color: #fff; }
-    .blq-check { font-size: 14px; color: rgba(255,255,255,.4); transition: color var(--t); }
-    .bloque-card.completado .blq-check { color: var(--vd); }
+    .blq-check { display: flex; align-items: center; justify-content: center; width: 20px; height: 20px; }
     .bloque-body { padding: 10px 14px 14px; }
     .adj-tabla { width: 100%; border-collapse: collapse; }
     .adj-tabla thead tr th { font-family: 'Sora', sans-serif; font-size: 9.5px; font-weight: 800; text-align: center; padding: 4px 6px 8px; text-transform: uppercase; letter-spacing: .7px; }
@@ -154,18 +156,21 @@
     .disc-card { background: var(--wh); border-radius: var(--rlg); box-shadow: var(--sh); overflow: hidden; }
     .disc-body { padding: 20px 24px; }
     .disc-sec-title { font-family: 'Sora', sans-serif; font-size: 11px; font-weight: 800; color: var(--g400); text-transform: uppercase; letter-spacing: .8px; margin-bottom: 18px; }
-
     .disc-bar-row { display: flex; align-items: center; gap: 12px; margin-bottom: 13px; }
     .disc-bar-row:last-child { margin-bottom: 0; }
     .disc-bar-label { font-family: 'Sora', sans-serif; font-size: 12px; font-weight: 700; width: 120px; flex-shrink: 0; color: var(--g700); }
-    .disc-bar-track { flex: 1; height: 10px; background: var(--g100); border-radius: 5px; overflow: hidden; position: relative; }
-    .disc-bar-fill { height: 100%; border-radius: 5px; transition: width .6s cubic-bezier(.4,0,.2,1); }
+    .disc-bar-track { flex: 1; height: 10px; background: var(--g100); border-radius: 5px; overflow: hidden; }
+    .disc-bar-fill { height: 100%; border-radius: 5px; width: 0; transition: width .75s cubic-bezier(.4,0,.2,1); }
     .disc-bar-val { font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 700; width: 32px; text-align: right; flex-shrink: 0; }
 
+    /* Perfil con badge grande */
     .profile-card { background: var(--wh); border-radius: var(--rlg); box-shadow: var(--sh); overflow: hidden; }
     .profile-body { padding: 22px 24px; }
+    .profile-top { display: flex; align-items: center; gap: 18px; margin-bottom: 14px; }
+    .profile-badge-big { width: 68px; height: 68px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Sora', sans-serif; font-size: 22px; font-weight: 900; color: #fff; flex-shrink: 0; letter-spacing: -1px; }
+    .profile-meta { flex: 1; min-width: 0; }
     .profile-key { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; color: var(--az); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
-    .profile-nombre { font-family: 'Sora', sans-serif; font-size: 22px; font-weight: 900; color: var(--azdk); margin-bottom: 10px; }
+    .profile-nombre { font-family: 'Sora', sans-serif; font-size: 22px; font-weight: 900; line-height: 1.1; }
     .profile-desc { font-size: 14px; line-height: 1.7; color: var(--g700); }
 
     .fa-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
@@ -178,24 +183,55 @@
     .fa-list li { font-size: 12.5px; line-height: 1.45; color: var(--g700); padding-left: 14px; position: relative; }
     .fa-list li::before { content: '—'; position: absolute; left: 0; color: var(--g400); font-weight: 700; }
 
-    .res-footer { text-align: center; font-size: 12px; color: var(--g400); font-family: 'JetBrains Mono', monospace; padding: 8px 0; }
+    /* Botón imprimir */
+    .btn-print-wrap { text-align: center; }
+    .btn-print { padding: 10px 28px; background: var(--wh); color: var(--azdk); border: 1.5px solid var(--azdk); border-radius: var(--r); font-family: 'Sora', sans-serif; font-size: 13px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; transition: background var(--t), color var(--t), transform var(--t); }
+    .btn-print:hover { background: var(--azdk); color: #fff; transform: translateY(-1px); }
+    .btn-print:active { transform: translateY(0); }
+
+    .res-footer { text-align: center; font-size: 12px; color: var(--g400); font-family: 'JetBrains Mono', monospace; padding: 4px 0; }
 
     /* ── OVERLAY ── */
     .overlay { position: fixed; inset: 0; background: rgba(13,90,122,.32); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px); display: none; align-items: center; justify-content: center; z-index: 999; }
     .overlay.visible { display: flex; }
-    .spinner-box { background: var(--wh); border-radius: var(--rlg); padding: 36px 52px; text-align: center; box-shadow: var(--shlg); }
+    .spinner-box { background: var(--wh); border-radius: var(--rlg); padding: 36px 52px; text-align: center; box-shadow: var(--shlg); min-width: 220px; }
     .spinner { width: 44px; height: 44px; border: 4px solid var(--g100); border-top-color: var(--azdk); border-radius: 50%; animation: spin .75s linear infinite; margin: 0 auto 16px; }
     @keyframes spin { to { transform: rotate(360deg); } }
+    .overlay-name { font-family: 'Sora', sans-serif; font-size: 17px; font-weight: 800; color: var(--azdk); margin-bottom: 4px; display: none; }
     .spinner-box p { font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 600; color: var(--g500); }
 
+    /* ── PRINT ── */
+    @media print {
+      .topbar, .btn-print-wrap, .overlay { display: none !important; }
+      body { background: #fff; }
+      .result-outer { padding: 12px; gap: 12px; }
+      .res-hdr-card, .disc-card, .profile-card, .fa-card { box-shadow: none !important; border: 1px solid #e5e7eb; }
+      .screen:not(#screen-confirm) { display: none !important; }
+      #screen-confirm { display: block !important; }
+      .fa-grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    /* ── MOBILE ── */
     @media (max-width: 640px) {
-      .tb-mod, .prog-pct, .instruc-icon { display: none; }
+      .tb-mod { display: none; }
+      .tb-badge { max-width: 140px; }
+      .login-banner { padding: 24px 20px 22px; }
+      .login-banner h2 { font-size: 17px; }
       .login-body { padding: 22px 20px 28px; }
-      .prueba-outer { padding: 16px 12px 60px; }
-      .bloques-grid { grid-template-columns: 1fr; }
-      .fa-grid { grid-template-columns: 1fr; }
-      .disc-bar-label { width: 80px; font-size: 11px; }
+      .prueba-outer { padding: 12px 12px 60px; }
+      .prog-pct { font-size: 20px; }
+      .instruc-icon { display: none; }
+      .bloques-grid { grid-template-columns: 1fr; gap: 10px; }
+      .adj-tabla tbody tr td { padding: 7px 6px; }
+      .radio-mas, .radio-menos { width: 24px; height: 24px; }
+      .btn-enviar { padding: 14px 32px; font-size: 15px; }
+      .result-outer { padding: 14px 12px 48px; gap: 12px; }
+      .res-hdr-body, .disc-body, .profile-body, .fa-body { padding: 16px 18px; }
       .res-nombre { font-size: 15px; }
+      .profile-badge-big { width: 56px; height: 56px; font-size: 18px; }
+      .profile-nombre { font-size: 18px; }
+      .disc-bar-label { width: 80px; font-size: 11px; }
+      .fa-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -225,6 +261,7 @@
   <div class="overlay" id="overlay">
     <div class="spinner-box">
       <div class="spinner"></div>
+      <div class="overlay-name" id="overlay-name"></div>
       <p id="overlay-msg">Procesando...</p>
     </div>
   </div>
@@ -269,7 +306,9 @@
           <div id="form-cand" style="display:none;">
             <div class="campo">
               <label class="clabel">Código de Acceso <span class="req">*</span></label>
-              <input class="cinput cinput-mono" type="text" id="inp-token" placeholder="CAND-2025-001-XXXX" autocomplete="off">
+              <input class="cinput cinput-mono" type="text" id="inp-token"
+                     placeholder="CAND-2025-001-XXXX" autocomplete="off"
+                     oninput="this.value=this.value.toUpperCase()">
             </div>
             <button class="btn-solu" onclick="loginCand()">Validar Código <span>→</span></button>
           </div>
@@ -287,7 +326,7 @@
           <div class="prog-info">
             <div class="prog-meta">
               <span class="prog-title">Progreso</span>
-              <span class="prog-count" id="prog-txt">0 / 24 bloques</span>
+              <span class="prog-count" id="prog-txt">0 / 24 bloques completados</span>
             </div>
             <div class="prog-track">
               <div class="prog-fill" id="prog-fill" style="width:0%"></div>
@@ -355,12 +394,17 @@
         </div>
       </div>
 
-      <!-- Perfil -->
+      <!-- Perfil con badge grande -->
       <div class="profile-card">
         <div class="card-colorbar" id="profile-colorbar"></div>
         <div class="profile-body">
-          <div class="profile-key" id="profile-key">—</div>
-          <div class="profile-nombre" id="profile-nombre">—</div>
+          <div class="profile-top">
+            <div class="profile-badge-big" id="profile-badge-big">—</div>
+            <div class="profile-meta">
+              <div class="profile-key" id="profile-key">—</div>
+              <div class="profile-nombre" id="profile-nombre">—</div>
+            </div>
+          </div>
           <div class="profile-desc" id="profile-desc">—</div>
         </div>
       </div>
@@ -383,18 +427,28 @@
         </div>
       </div>
 
-      <p class="res-footer">Evaluación registrada · Puede cerrar esta ventana con seguridad.</p>
+      <!-- Imprimir -->
+      <div class="btn-print-wrap">
+        <button class="btn-print" onclick="window.print()">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+          Imprimir / Guardar PDF
+        </button>
+      </div>
 
+      <p class="res-footer">Evaluación registrada · Puede cerrar esta ventana con seguridad.</p>
     </div>
   </div>
 
 <script>
-  var SESION  = { tipo: null, correo: null, nombre: null, puesto: null, tokenFila: null };
-  var BLOQUES = [];
+  var SESION     = { tipo: null, correo: null, nombre: null, puesto: null, tokenFila: null };
+  var BLOQUES    = [];
   var RESPUESTAS = {};
 
   var DISC_COLORES = { D:'#0d5a7a', I:'#F26D5B', S:'#22C55E', C:'#55B6E3' };
   var DISC_LABELS  = { D:'D — Dominancia', I:'I — Influencia', S:'S — Estabilidad', C:'C — Cumplimiento' };
+
+  var SVG_OK  = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+  var SVG_CIR = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.4)" stroke-width="2"><circle cx="12" cy="12" r="9"/></svg>';
 
   function switchTab(t) {
     document.getElementById('tab-corp').classList.toggle('active', t === 'corp');
@@ -415,12 +469,11 @@
     var nombre = document.getElementById('inp-nombre-corp').value.trim();
     var puesto = document.getElementById('inp-puesto-corp').value.trim();
     if (!correo || !nombre || !puesto) { mostrarError('Complete todos los campos.'); return; }
-    if (!correo.includes('@'))         { mostrarError('Correo inválido.'); return; }
+    if (!correo.includes('@')) { mostrarError('Correo inválido.'); return; }
     mostrarOverlay('Validando credenciales...');
     google.script.run
       .withSuccessHandler(function(res) {
-        ocultarOverlay();
-        if (!res.ok) { mostrarError(res.msg); return; }
+        if (!res.ok) { ocultarOverlay(); mostrarError(res.msg); return; }
         SESION = { tipo: 'PLANTILLA', correo: correo, nombre: nombre, puesto: puesto, tokenFila: null };
         iniciarPrueba();
       })
@@ -434,19 +487,23 @@
     mostrarOverlay('Validando código...');
     google.script.run
       .withSuccessHandler(function(res) {
-        ocultarOverlay();
-        if (!res.ok) { mostrarError(res.msg); return; }
+        if (!res.ok) { ocultarOverlay(); mostrarError(res.msg); return; }
         SESION = { tipo: 'CANDIDATO', correo: res.correo, nombre: res.nombre, puesto: res.puesto, tokenFila: res.fila };
-        iniciarPrueba();
+        document.getElementById('overlay-name').textContent = 'Bienvenido/a, ' + res.nombre + '!';
+        document.getElementById('overlay-name').style.display = 'block';
+        document.getElementById('overlay-msg').textContent = 'Preparando tu evaluación...';
+        setTimeout(iniciarPrueba, 1200);
       })
       .withFailureHandler(function(e) { ocultarOverlay(); mostrarError('Error: ' + e.message); })
       .validarToken(token);
   }
 
   function iniciarPrueba() {
+    document.getElementById('overlay-name').style.display = 'none';
     mostrarOverlay('Cargando evaluación...');
+    var tipo  = SESION.tipo === 'CANDIDATO' ? 'Candidato' : 'Interno';
     var badge = document.getElementById('tb-badge');
-    badge.textContent = SESION.tipo === 'CANDIDATO' ? 'Candidato Externo' : 'Personal Interno';
+    badge.textContent = SESION.nombre ? SESION.nombre + ' · ' + tipo : tipo;
     badge.style.display = 'block';
     google.script.run
       .withSuccessHandler(function(bloques) {
@@ -461,7 +518,7 @@
   }
 
   function renderBloques() {
-    document.getElementById('bloques-container').innerHTML = BLOQUES.map(function(b) {
+    document.getElementById('bloques-container').innerHTML = BLOQUES.map(function(b, idx) {
       var rows = b.adj.map(function(adj) {
         var k = b.id + '_' + adj.replace(/\s+/g,'_');
         return '<tr>' +
@@ -469,9 +526,11 @@
           '<td style="text-align:center;width:36px;"><input type="radio" class="radio-menos" name="menos_' + b.id + '" value="' + adj + '" id="menos_' + k + '" onchange="onSel(' + b.id + ')"></td>' +
           '<td class="adj-nombre">' + adj + '</td></tr>';
       }).join('');
-      return '<div class="bloque-card" id="bloque-' + b.id + '">' +
-        '<div class="bloque-header"><div class="blq-left"><span class="blq-num">BLQ-' + String(b.id).padStart(2,'0') + '</span><span class="blq-title">Bloque ' + b.id + '</span></div>' +
-        '<span class="blq-check" id="check-' + b.id + '">&#9675;</span></div>' +
+      return '<div class="bloque-card" id="bloque-' + b.id + '" style="--bi:' + idx + '">' +
+        '<div class="bloque-header">' +
+          '<div class="blq-left"><span class="blq-num">BLQ-' + String(b.id).padStart(2,'0') + '</span><span class="blq-title">Bloque ' + b.id + '</span></div>' +
+          '<span class="blq-check" id="check-' + b.id + '">' + SVG_CIR + '</span>' +
+        '</div>' +
         '<div class="bloque-body"><table class="adj-tabla"><thead><tr><th class="th-mas">MÁS</th><th class="th-menos">MENOS</th><th class="th-adj">Adjetivo</th></tr></thead>' +
         '<tbody>' + rows + '</tbody></table></div></div>';
     }).join('');
@@ -496,14 +555,14 @@
     if (masEl && menosEl) {
       RESPUESTAS[id] = { mas: masEl.value, menos: menosEl.value };
       card.classList.add('completado'); card.classList.remove('incompleto-error');
-      check.innerHTML = '&#10003;';
+      check.innerHTML = SVG_OK;
     } else {
       delete RESPUESTAS[id];
       card.classList.remove('completado');
-      check.innerHTML = '&#9675;';
+      check.innerHTML = SVG_CIR;
     }
     var c = Object.keys(RESPUESTAS).length, t = BLOQUES.length, p = Math.round(c/t*100);
-    document.getElementById('prog-txt').textContent  = c + ' / ' + t + ' bloques';
+    document.getElementById('prog-txt').textContent  = c + ' / ' + t + ' bloques completados';
     document.getElementById('prog-fill').style.width = p + '%';
     document.getElementById('prog-pct').textContent  = p + '%';
   }
@@ -519,13 +578,11 @@
     document.getElementById('alerta-inc').style.display = 'none';
     document.getElementById('btn-enviar').disabled = true;
     mostrarOverlay('Calculando perfil DISC...');
-
     var payload = {
       tipo: SESION.tipo, correo: SESION.correo, nombre: SESION.nombre,
       puesto: SESION.puesto, tokenFila: SESION.tokenFila,
       respuestas: BLOQUES.map(function(b){ return { bloque: b.id, mas: RESPUESTAS[b.id].mas, menos: RESPUESTAS[b.id].menos }; })
     };
-
     google.script.run
       .withSuccessHandler(function(res) {
         ocultarOverlay();
@@ -546,44 +603,43 @@
 
   function mostrarResultados(d) {
     var now = new Date();
-
-    // Header
     document.getElementById('res-nombre').textContent = SESION.nombre || SESION.correo;
     document.getElementById('res-tipo').textContent   = SESION.tipo === 'CANDIDATO' ? 'Candidato Externo' : 'Personal Interno';
     document.getElementById('res-fecha').textContent  = now.toLocaleDateString('es-MX') + ' ' + now.toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'});
 
-    // Barras DISC
+    // Barras — inician en 0, animan después del primer render
     var maxRef = 12;
-    var factors = ['D','I','S','C'];
-    document.getElementById('disc-bars').innerHTML = factors.map(function(f) {
+    document.getElementById('disc-bars').innerHTML = ['D','I','S','C'].map(function(f) {
       var v   = d.neto[f];
       var pct = Math.max(4, Math.min(100, (v + maxRef) / (maxRef * 2) * 100));
       var col = DISC_COLORES[f];
-      var sign = v > 0 ? '+' : '';
+      var sgn = v > 0 ? '+' : '';
       return '<div class="disc-bar-row">' +
         '<div class="disc-bar-label">' + DISC_LABELS[f] + '</div>' +
-        '<div class="disc-bar-track"><div class="disc-bar-fill" style="width:' + pct + '%;background:' + col + '"></div></div>' +
-        '<div class="disc-bar-val" style="color:' + col + '">' + sign + v + '</div>' +
-        '</div>';
+        '<div class="disc-bar-track"><div class="disc-bar-fill" data-pct="' + pct + '" style="background:' + col + '"></div></div>' +
+        '<div class="disc-bar-val" style="color:' + col + '">' + sgn + v + '</div>' +
+      '</div>';
     }).join('');
+
+    setTimeout(function() {
+      document.querySelectorAll('.disc-bar-fill').forEach(function(el) {
+        el.style.width = el.dataset.pct + '%';
+      });
+    }, 120);
 
     // Perfil
     var topColor = DISC_COLORES[d.top] || '#0d5a7a';
-    document.getElementById('profile-colorbar').style.background = topColor;
-    document.getElementById('profile-key').textContent    = 'Perfil ' + d.top + (d.sec ? '/' + d.sec : '');
-    document.getElementById('profile-nombre').textContent = d.perfil.nombre;
-    document.getElementById('profile-nombre').style.color = topColor;
-    document.getElementById('profile-desc').textContent   = d.perfil.desc;
+    document.getElementById('profile-colorbar').style.background  = topColor;
+    document.getElementById('profile-badge-big').textContent      = d.key || d.top;
+    document.getElementById('profile-badge-big').style.background = topColor;
+    document.getElementById('profile-badge-big').style.boxShadow  = '0 6px 20px ' + topColor + '55';
+    document.getElementById('profile-key').textContent            = 'Perfil ' + (d.key || d.top);
+    document.getElementById('profile-nombre').textContent         = d.perfil.nombre;
+    document.getElementById('profile-nombre').style.color         = topColor;
+    document.getElementById('profile-desc').textContent           = d.perfil.desc;
 
-    // Fortalezas
-    document.getElementById('res-fortalezas').innerHTML = d.fortalezas.map(function(f){
-      return '<li>' + f + '</li>';
-    }).join('');
-
-    // Áreas
-    document.getElementById('res-areas').innerHTML = d.areas.map(function(a){
-      return '<li>' + a + '</li>';
-    }).join('');
+    document.getElementById('res-fortalezas').innerHTML = d.fortalezas.map(function(f){ return '<li>' + f + '</li>'; }).join('');
+    document.getElementById('res-areas').innerHTML      = d.areas.map(function(a){ return '<li>' + a + '</li>'; }).join('');
 
     mostrarScreen('screen-confirm');
     window.scrollTo(0, 0);
@@ -599,6 +655,7 @@
   }
   function ocultarOverlay() {
     document.getElementById('overlay').classList.remove('visible');
+    document.getElementById('overlay-name').style.display = 'none';
   }
 </script>
 </body>
