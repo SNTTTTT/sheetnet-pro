@@ -581,6 +581,26 @@ function inicializarHojasApp() {
   );
 }
 
+// ── DIAGNÓSTICO: ejecuta esta función desde el editor para verificar detección CH ──
+function diagnosticoCH() {
+  const ss    = _ss();
+  const hoja  = ss.getSheetByName(CFG_APP.HOJA_USUARIOS_CH);
+  if (!hoja) { Logger.log("ERROR: La hoja USUARIOS_CH no existe."); return; }
+
+  const datos = hoja.getRange(2, 1, Math.max(hoja.getLastRow()-1,1), 4).getValues();
+  Logger.log("=== USUARIOS_CH (" + datos.length + " filas) ===");
+  datos.forEach(function(r, i) {
+    var correo = String(r[0]).trim().toLowerCase();
+    var activo = String(r[1]).trim().toUpperCase();
+    var esCH   = correo.length > 3 && activo !== 'NO';
+    Logger.log("Fila " + (i+2) + ": [" + correo + "] activo=[" + activo + "] → esCH=" + esCH);
+  });
+
+  // Prueba con un correo específico
+  var correoTest = "isaac.galindo@ssolu.com.mx";
+  Logger.log("=== Prueba _esUsuarioCH('" + correoTest + "') → " + _esUsuarioCH(correoTest) + " ===");
+}
+
 // ── ADMIN: SINCRONIZAR TOKENS DESDE NUEVOS_INGRESOS ──────────────────────────
 function sincronizarTokensDesdeNuevosIngresos() {
   try {
