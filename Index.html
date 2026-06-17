@@ -191,6 +191,16 @@
 
     .res-footer { text-align: center; font-size: 12px; color: var(--g400); font-family: 'JetBrains Mono', monospace; padding: 4px 0; }
 
+    /* ══ GRACIAS (usuario regular) ══ */
+    .gracias-outer { min-height: calc(100vh - 52px); display: flex; align-items: center; justify-content: center; padding: 40px 16px; }
+    .gracias-card { width: 100%; max-width: 460px; background: var(--wh); border-radius: var(--rlg); box-shadow: var(--shlg); overflow: hidden; }
+    .gracias-body { padding: 40px 36px 44px; text-align: center; }
+    .gracias-icon { width: 72px; height: 72px; background: linear-gradient(135deg, var(--vd), var(--vd2)); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 22px; box-shadow: 0 8px 24px rgba(34,197,94,.28); }
+    .gracias-title { font-family: 'Sora', sans-serif; font-size: 22px; font-weight: 900; color: var(--azdk); margin-bottom: 10px; }
+    .gracias-nombre { font-family: 'Sora', sans-serif; font-size: 15px; font-weight: 700; color: var(--g700); margin-bottom: 16px; }
+    .gracias-msg { font-size: 14px; line-height: 1.75; color: var(--g500); margin-bottom: 24px; }
+    .gracias-tag { display: inline-block; background: var(--g100); border: 1px solid var(--g200); color: var(--g400); font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 600; padding: 5px 14px; border-radius: 20px; letter-spacing: .5px; }
+
     /* ── OVERLAY ── */
     .overlay { position: fixed; inset: 0; background: rgba(13,90,122,.32); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px); display: none; align-items: center; justify-content: center; z-index: 999; }
     .overlay.visible { display: flex; }
@@ -439,8 +449,29 @@
     </div>
   </div>
 
+  <!-- ══ SCREEN 4 — GRACIAS (usuarios regulares) ══ -->
+  <div class="screen" id="screen-gracias">
+    <div class="gracias-outer">
+      <div class="gracias-card">
+        <div class="card-colorbar" style="background:var(--vd)"></div>
+        <div class="gracias-body">
+          <div class="gracias-icon">
+            <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div class="gracias-title">¡Evaluación registrada!</div>
+          <div class="gracias-nombre" id="gracias-nombre"></div>
+          <div class="gracias-msg">
+            Tu evaluación ha sido recibida exitosamente.<br>
+            <strong>Capital Humano se comunicará contigo en breve</strong> con los resultados y próximos pasos del proceso.
+          </div>
+          <span class="gracias-tag">Puedes cerrar esta ventana con seguridad</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
 <script>
-  var SESION     = { tipo: null, correo: null, nombre: null, puesto: null, tokenFila: null };
+  var SESION     = { tipo: null, correo: null, nombre: null, puesto: null, tokenFila: null, esAdmin: false };
   var BLOQUES    = [];
   var RESPUESTAS = {};
 
@@ -474,7 +505,7 @@
     google.script.run
       .withSuccessHandler(function(res) {
         if (!res.ok) { ocultarOverlay(); mostrarError(res.msg); return; }
-        SESION = { tipo: 'PLANTILLA', correo: correo, nombre: nombre, puesto: puesto, tokenFila: null };
+        SESION = { tipo: 'PLANTILLA', correo: correo, nombre: nombre, puesto: puesto, tokenFila: null, esAdmin: !!res.esAdmin };
         iniciarPrueba();
       })
       .withFailureHandler(function(e) { ocultarOverlay(); mostrarError('Error: ' + e.message); })
@@ -488,7 +519,7 @@
     google.script.run
       .withSuccessHandler(function(res) {
         if (!res.ok) { ocultarOverlay(); mostrarError(res.msg); return; }
-        SESION = { tipo: 'CANDIDATO', correo: res.correo, nombre: res.nombre, puesto: res.puesto, tokenFila: res.fila };
+        SESION = { tipo: 'CANDIDATO', correo: res.correo, nombre: res.nombre, puesto: res.puesto, tokenFila: res.fila, esAdmin: false };
         document.getElementById('overlay-name').textContent = 'Bienvenido/a, ' + res.nombre + '!';
         document.getElementById('overlay-name').style.display = 'block';
         document.getElementById('overlay-msg').textContent = 'Preparando tu evaluación...';
@@ -602,6 +633,16 @@
   }
 
   function mostrarResultados(d) {
+    // Usuarios regulares (no CH) — solo pantalla de gracias
+    if (!SESION.esAdmin) {
+      document.getElementById('gracias-nombre').textContent =
+        SESION.nombre ? 'Gracias, ' + SESION.nombre + '.' : 'Gracias por completar la evaluación.';
+      mostrarScreen('screen-gracias');
+      window.scrollTo(0, 0);
+      return;
+    }
+
+    // Capital Humano — resultados completos
     var now = new Date();
     document.getElementById('res-nombre').textContent = SESION.nombre || SESION.correo;
     document.getElementById('res-tipo').textContent   = SESION.tipo === 'CANDIDATO' ? 'Candidato Externo' : 'Personal Interno';

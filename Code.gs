@@ -8,6 +8,7 @@ const CFG_APP = {
   SS_ID              : "17guNUaSg2bHQ9vd2HiS0f02YK92R-cl1rywFWFd1JN0",
   HOJA_TOKENS        : "Tokens_Candidatos",
   HOJA_DOMINIOS      : "Dominios_Permitidos",
+  HOJA_USUARIOS_CH   : "USUARIOS_CH",             // Capital Humano — ven resultados completos
   HOJA_PLANTILLA     : "Base_Plantilla_DISC",
   HOJA_CANDIDATOS    : "Base_Candidatos_DISC",
   HOJA_CONCENTRADO   : "CONCENTRADO",
@@ -355,7 +356,8 @@ function validarCorreoCorporativo(correo) {
       const stored = String(datos[i][0]).trim().toLowerCase().replace(/^@/, '');
       if (stored === dominio) {
         if (_yaRespondio(correo)) return {ok: false, msg: "Este correo ya completó la evaluación.", repetido: true};
-        return {ok: true, tipo: "PLANTILLA", correo: correo};
+        const esAdmin = _esUsuarioCH(correo);
+        return {ok: true, tipo: "PLANTILLA", correo: correo, esAdmin: esAdmin};
       }
     }
     return {ok: false, msg: "El dominio de este correo no está autorizado."};
@@ -581,12 +583,26 @@ function _yaRespondio(correo) {
 }
 function esCandidatoSheet(nombre) { return nombre === CFG_APP.HOJA_CANDIDATOS; }
 
+function _esUsuarioCH(correo) {
+  try {
+    const hoja = _ss().getSheetByName(CFG_APP.HOJA_USUARIOS_CH);
+    if (!hoja || hoja.getLastRow() < 2) return false;
+    const datos = hoja.getRange(2, 1, hoja.getLastRow() - 1, 2).getValues();
+    return datos.some(function(r) {
+      const email  = String(r[0]).trim().toLowerCase();
+      const activo = String(r[1]).trim().toUpperCase();
+      return email === correo && activo !== 'NO';
+    });
+  } catch(e) { return false; }
+}
+
 // ── ADMIN: inicializar todas las hojas ────────────────────────────────────────
 function inicializarHojasApp() {
   const ss = _ss();
   const defs = [
     { nombre: CFG_APP.HOJA_TOKENS,         heads: ["Token","Correo","Nombre","Puesto","Usado","Fecha_Uso"] },
     { nombre: CFG_APP.HOJA_DOMINIOS,       heads: ["Dominio","Descripcion"] },
+    { nombre: CFG_APP.HOJA_USUARIOS_CH,    heads: ["Correo","Activo","Nombre","Rol"] },
     { nombre: CFG_APP.HOJA_PLANTILLA,      heads: HEADS_PLANTILLA },
     { nombre: CFG_APP.HOJA_CANDIDATOS,     heads: HEADS_CANDIDATOS },
     { nombre: CFG_APP.HOJA_CONCENTRADO,    heads: HEADS_CONCENTRADO },
