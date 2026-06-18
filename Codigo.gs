@@ -193,50 +193,7 @@ function registrarSesion() {
   return { ok: true };
 }
 
-function obtenerAuditoria(filtros) {
-  try {
-    const email = Session.getActiveUser().getEmail().toLowerCase().trim();
-    if (!_getSuperAdmins().includes(email)) return { error: "Sin permisos para: " + email };
-    const ss = SpreadsheetApp.openById(SS_MASTER_ID);
-    const sh = ss.getSheetByName(SH_AUDITORIA);
-    if (!sh || sh.getLastRow() < 2) return { stats: { total:0, hoy:0, sesiones:0, solicitudes:0, cambios:0, usuarios:0 }, rows: [] };
-    const numRows = sh.getLastRow() - 1;
-    const cols    = Math.min(sh.getLastColumn(), 10);
-    const raw     = sh.getRange(2, 1, numRows, cols).getDisplayValues();
-    const hoy     = Utilities.formatDate(new Date(), "GMT-6", "dd/MM/yyyy");
-    const modulosSol = ["ACTAS","RESIDUOS","EXPEDIENTES"];
-    let sesiones=0, solicitudes=0, cambios=0, hoyCount=0;
-    const emails  = new Set();
-    const rows    = [];
-    for (let i = raw.length - 1; i >= 0; i--) {
-      const r = raw[i];
-      const fecha  = r[1] || "";
-      const accion = r[7] || "";
-      const modulo = r[6] || "";
-      const em     = (r[3] || "").toLowerCase().trim();
-      if (fecha === hoy) hoyCount++;
-      if (accion.indexOf("SESIÓN") > -1 || accion.indexOf("SESION") > -1) sesiones++;
-      if (modulosSol.indexOf(modulo) > -1 && accion.indexOf("NUEVA") > -1) solicitudes++;
-      if (accion.indexOf("ESTATUS") > -1) cambios++;
-      if (em) emails.add(em);
-      if (rows.length < 500) {
-        rows.push({ id:r[0]||"", fecha:fecha, hora:r[2]||"", email:r[3]||"", nombre:r[4]||"", area:r[5]||"", modulo:modulo, accion:accion, detalle:r[8]||"", referencia:r[9]||"" });
-      }
-    }
-    return {
-      stats: { total: raw.length, hoy: hoyCount, sesiones: sesiones, solicitudes: solicitudes, cambios: cambios, usuarios: emails.size },
-      rows:  rows
-    };
-  } catch(e) { return { error: "GAS_ERROR: " + e.message }; }
-}
 
-function getAuditoriaStats() {
-  try {
-    const res = obtenerAuditoria({});
-    if (res.error) return { ok: false, error: res.error };
-    return { ok: true, stats: res.stats };
-  } catch(e) { return { ok: false, error: e.message }; }
-}
 
 /* ═══════════════════════════════════════════════════════════════
    BASE DE DATOS — inicialización de hojas (sólo módulos activos)
@@ -790,97 +747,9 @@ function crearExpedienteNuevo(payload) {
   finally { try { lock.releaseLock(); } catch(le) {} }
 }
 
-/* ═══════════════════════════════════════════════════════════════
-   ADMINISTRACIÓN DE USUARIOS
-   El sistema gestiona permisos de Actas · Expediente · Residuos.
-   Las columnas de módulos retirados se PRESERVAN por integridad de datos.
-═══════════════════════════════════════════════════════════════ */
-function obtenerTodosLosUsuarios() {
-  try {
-    const sh = SpreadsheetApp.openById(SS_MASTER_ID).getSheetByName(SH_USUARIOS);
-    if (!sh || sh.getLastRow() < 2) return [];
-    const data = sh.getRange(2, 1, sh.getLastRow()-1, 25).getValues();
-    const usuarios = [];
-    data.forEach((r, i) => {
-      usuarios.push({
-        rowIndex: i + 2, numeroOperador: String(r[0]), correo: String(r[1]).toLowerCase().trim(), nombre: String(r[2]), area: String(r[3]).toUpperCase(), puesto: String(r[4]), tipo: String(r[5]).toUpperCase(), activo: normalizarBooleano(r[6]),
-        actas_acceso: normalizarBooleano(r[10]), actas_admin: normalizarBooleano(r[11]), actas_puede_solicitar: normalizarBooleano(r[12]),
-        residuos_acceso: normalizarBooleano(r[17]), residuos_admin: normalizarBooleano(r[18]),
-        expedientes_acceso: normalizarBooleano(r[21]), expedientes_admin: normalizarBooleano(r[22])
-      });
-    });
-    return usuarios;
-  } catch(e) { throw new Error("Error cargando usuarios: " + e.message); }
-}
 
-function crearNuevoUsuario(payload) {
-  try {
-    const sh = SpreadsheetApp.openById(SS_MASTER_ID).getSheetByName(SH_USUARIOS);
-    if (sh.getLastRow() >= 2) {
-      const correos = sh.getRange(2, 2, sh.getLastRow()-1, 1).getValues();
-      for (let i = 0; i < correos.length; i++) {
-        if (String(correos[i][0]).toLowerCase().trim() === payload.correo.toLowerCase().trim()) { return { success: false, mensaje: "Error: Ya existe un usuario con ese correo" }; }
-      }
-    }
-    // 25 columnas. Las de módulos retirados se escriben en "NO" (esquema intacto).
-    const row = [
-      payload.numeroOperador, payload.correo, payload.nombre, payload.area, payload.puesto, payload.tipo, "SI",
-      "NO", "NO", "",                                                                        // compras (8-10)
-      payload.actas_acceso?"SI":"NO", payload.actas_admin?"SI":"NO", payload.actas_puede_solicitar?"SI":"NO",
-      "NO", "NO",                                                                            // soporte (14-15)
-      "NO", "NO",                                                                            // mantenimiento (16-17)
-      payload.residuos_acceso?"SI":"NO", payload.residuos_admin?"SI":"NO",
-      "NO", "NO",                                                                            // transporte (20-21)
-      payload.expedientes_acceso?"SI":"NO", payload.expedientes_admin?"SI":"NO",
-      "NO", "NO"                                                                             // limpieza (24-25)
-    ];
-    sh.appendRow(row);
-    CacheService.getUserCache().remove('perfil_v5_' + payload.correo.toLowerCase().trim());
-    registrarAuditoria("USUARIOS","USUARIO_CREADO","Correo: "+payload.correo+", Area: "+payload.area+", Tipo: "+payload.tipo,"");
-    return { success: true, mensaje: "Usuario creado exitosamente" };
-  } catch(e) { return { success: false, mensaje: "Error: " + e.message }; }
-}
 
-function actualizarUsuario(payload) {
-  try {
-    const sh = SpreadsheetApp.openById(SS_MASTER_ID).getSheetByName(SH_USUARIOS);
-    // BLINDAJE: leer la fila actual para PRESERVAR las columnas de módulos retirados.
-    const prev = sh.getRange(payload.rowIndex, 1, 1, 25).getValues()[0];
-    const keep = (idx, def) => (prev[idx] !== undefined && prev[idx] !== "") ? prev[idx] : def;
-    const row = [
-      payload.numeroOperador, payload.correo, payload.nombre, payload.area, payload.puesto, payload.tipo,
-      payload.activo ? "SI" : "NO",
-      keep(7,"NO"), keep(8,"NO"), keep(9,""),                                                // compras (preservado)
-      payload.actas_acceso ? "SI" : "NO", payload.actas_admin ? "SI" : "NO", payload.actas_puede_solicitar ? "SI" : "NO",
-      keep(13,"NO"), keep(14,"NO"),                                                          // soporte (preservado)
-      keep(15,"NO"), keep(16,"NO"),                                                          // mantenimiento (preservado)
-      payload.residuos_acceso ? "SI" : "NO", payload.residuos_admin ? "SI" : "NO",
-      keep(19,"NO"), keep(20,"NO"),                                                          // transporte (preservado)
-      payload.expedientes_acceso ? "SI" : "NO", payload.expedientes_admin ? "SI" : "NO",
-      keep(23,"NO"), keep(24,"NO")                                                           // limpieza (preservado)
-    ];
-    sh.getRange(payload.rowIndex, 1, 1, 25).setValues([row]);
-    CacheService.getUserCache().remove('perfil_v5_' + payload.correo.toLowerCase().trim());
-    registrarAuditoria("USUARIOS","USUARIO_ACTUALIZADO","Correo: "+payload.correo+", Area: "+payload.area+", Activo: "+(payload.activo?"SI":"NO"),"");
-    return { success: true, mensaje: "Usuario actualizado" };
-  } catch(e) { return { success: false, mensaje: "Error: " + e.message }; }
-}
 
-function desactivarUsuario(correo) {
-  try {
-    const sh = SpreadsheetApp.openById(SS_MASTER_ID).getSheetByName(SH_USUARIOS);
-    const data = sh.getRange(2, 2, sh.getLastRow()-1, 1).getValues();
-    for (let i = 0; i < data.length; i++) {
-      if (String(data[i][0]).toLowerCase().trim() === correo.toLowerCase().trim()) {
-        sh.getRange(i+2, 7).setValue("NO");
-        CacheService.getUserCache().remove('perfil_v5_' + correo.toLowerCase().trim());
-        registrarAuditoria("USUARIOS","USUARIO_DESACTIVADO","Correo desactivado: "+correo,"");
-        return { success: true, mensaje: "Usuario desactivado" };
-      }
-    }
-    return { success: false, mensaje: "Usuario no encontrado" };
-  } catch(e) { return { success: false, mensaje: "Error: " + e.message }; }
-}
 
 /* ═══════════════════════════════════════════════════════════════
    MANEJADOR DE ENLACES EXTERNOS (correos / HTML GET)
