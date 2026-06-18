@@ -2689,5 +2689,114 @@ function guardarNuevoIngreso() {
 /* ══ FIN NUEVO INGRESO ══ */
 </script>
 
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     REDISEÑO CORPORATIVO v8 · "Command Deck"
+     Identidad Santillán Ramírez amplificada (navy + cian + coral).
+     No introduce colores fuera de la identidad corporativa.
+═══════════════════════════════════════════════════════════════════ -->
+<style id="rediseno-v8">
+:root{--spring:cubic-bezier(.2,.9,.3,1.25)}
+
+/* ── Scrollbar e interacción corporativa ── */
+*{scrollbar-width:thin;scrollbar-color:var(--azul) transparent}
+::-webkit-scrollbar{width:10px;height:10px}
+::-webkit-scrollbar-track{background:rgba(31,58,77,.04)}
+::-webkit-scrollbar-thumb{background:linear-gradient(var(--azul),var(--azul-d));border-radius:10px;border:2px solid transparent;background-clip:padding-box}
+::-webkit-scrollbar-thumb:hover{background:var(--azul-d)}
+::selection{background:rgba(84,169,200,.28);color:var(--navy)}
+
+/* ════════ HERO · cubierta de mando ════════ */
+.hero{position:relative;overflow:hidden;background:linear-gradient(135deg,#162E3D 0%,#1F3A4D 45%,#16323F 100%)!important;border:1px solid rgba(84,169,200,.16)!important;box-shadow:0 22px 64px rgba(31,58,77,.30),0 0 0 1px rgba(84,169,200,.05),inset 0 1px 0 rgba(255,255,255,.06)!important}
+.hero::before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;background:radial-gradient(42% 62% at 12% 18%,rgba(84,169,200,.24),transparent 60%),radial-gradient(38% 52% at 88% 86%,rgba(240,100,79,.15),transparent 60%),radial-gradient(30% 42% at 72% 8%,rgba(84,169,200,.13),transparent 70%);animation:heroAurora 16s ease-in-out infinite alternate}
+.hero::after{content:"";position:absolute;top:0;left:-35%;width:60%;height:100%;z-index:1;pointer-events:none;background:linear-gradient(100deg,transparent,rgba(84,169,200,.10),transparent);transform:skewX(-18deg);animation:heroSheen 8s ease-in-out infinite}
+@keyframes heroAurora{0%{transform:translate3d(0,0,0) scale(1)}100%{transform:translate3d(0,-3%,0) scale(1.09)}}
+@keyframes heroSheen{0%,100%{left:-40%}55%{left:125%}}
+.hero-inner,.hero-strip{position:relative;z-index:3}
+.hero-bg-grid{background-image:linear-gradient(rgba(84,169,200,.10) 1px,transparent 1px),linear-gradient(90deg,rgba(84,169,200,.10) 1px,transparent 1px)!important;background-size:34px 34px!important;-webkit-mask-image:radial-gradient(circle at 50% 38%,#000,transparent 82%);mask-image:radial-gradient(circle at 50% 38%,#000,transparent 82%);animation:gridDrift 24s linear infinite;opacity:.55;z-index:1}
+@keyframes gridDrift{from{background-position:0 0}to{background-position:34px 34px}}
+.hero-blob-1{animation:blobA 13s ease-in-out infinite!important}
+.hero-blob-2{animation:blobB 16s ease-in-out infinite!important}
+@keyframes blobA{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(26px,-20px) scale(1.16)}}
+@keyframes blobB{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-28px,18px) scale(1.2)}}
+.hero-accent{height:3px!important;background:linear-gradient(90deg,var(--azul),transparent)!important;animation:accentGrow 1s var(--spring) both}
+@keyframes accentGrow{from{width:0;opacity:0}to{width:58px;opacity:1}}
+.hero-tag{position:relative;border:1px solid rgba(84,169,200,.32)!important;background:rgba(84,169,200,.08)!important;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);padding-left:24px!important}
+.hero-tag::before{content:"";position:absolute;left:10px;top:50%;transform:translateY(-50%);width:7px;height:7px;border-radius:50%;background:var(--azul);animation:tagPulse 2.2s infinite}
+@keyframes tagPulse{0%{box-shadow:0 0 0 0 rgba(84,169,200,.55)}70%{box-shadow:0 0 0 9px rgba(84,169,200,0)}100%{box-shadow:0 0 0 0 rgba(84,169,200,0)}}
+.hero-h1{font-size:clamp(1.8rem,4.4vw,3.05rem)!important;letter-spacing:-1.1px!important;line-height:1.03!important}
+.hero-h1 span{background:linear-gradient(135deg,#8DCEEA,#54A9C8 45%,#2C6C84)!important;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;text-shadow:0 0 28px rgba(84,169,200,.25)}
+.hero-logo-big{animation:logoFloat 6s ease-in-out infinite;filter:drop-shadow(0 8px 28px rgba(84,169,200,.35))}
+@keyframes logoFloat{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-10px) rotate(-1.2deg)}}
+.hero-strip{height:3px!important;background:linear-gradient(90deg,transparent,var(--azul),var(--naranja),var(--azul),transparent)!important;background-size:200% 100%!important;animation:stripFlow 7s linear infinite}
+@keyframes stripFlow{from{background-position:0 0}to{background-position:200% 0}}
+.h-chip{background:rgba(84,169,200,.09)!important;border:1px solid rgba(84,169,200,.22)!important;transition:transform .3s var(--spring),background .3s}
+.h-chip:hover{background:rgba(84,169,200,.16)!important;transform:translateY(-2px)}
+
+/* ════════ TARJETAS DE MÓDULO · agresivas ════════ */
+.mc{position:relative;overflow:hidden;isolation:isolate;transition:transform .45s var(--spring),box-shadow .45s ease,border-color .45s ease!important}
+.mg>.mc{animation:mcIn .6s both}
+.mg>.mc:nth-of-type(3){animation-delay:.05s}.mg>.mc:nth-of-type(4){animation-delay:.14s}.mg>.mc:nth-of-type(5){animation-delay:.23s}
+@keyframes mcIn{from{opacity:0;transform:translateY(26px) scale(.97)}to{opacity:1;transform:none}}
+.mc::after{content:"";position:absolute;top:0;left:-60%;width:55%;height:100%;background:linear-gradient(100deg,transparent,rgba(84,169,200,.16),transparent);transform:skewX(-20deg);transition:left .7s ease;z-index:4;pointer-events:none}
+.mc:hover::after{left:135%}
+.mc:hover{transform:translateY(-12px) scale(1.012)!important;box-shadow:0 6px 16px rgba(31,58,77,.08),0 26px 62px rgba(31,58,77,.17),0 0 42px rgba(84,169,200,.10)!important;border-color:rgba(84,169,200,.45)!important}
+.mc-num{transition:transform .5s var(--spring),opacity .5s ease}
+.mc:hover .mc-num{transform:scale(1.18) translate(4px,-4px);opacity:.14}
+.mc-ico{transition:transform .5s var(--spring),box-shadow .5s ease!important}
+.mc:hover .mc-ico{transform:scale(1.12) rotate(-6deg)}
+.mc.var-o:hover .mc-ico{box-shadow:0 10px 28px rgba(240,100,79,.42)}
+.mc.var-y:hover .mc-ico{box-shadow:0 10px 28px rgba(217,155,41,.42)}
+.mc.var-r:hover .mc-ico{box-shadow:0 10px 28px rgba(201,74,74,.42)}
+.mc-arr{transition:transform .4s var(--spring)}
+.mc:hover .mc-arr{transform:translateX(7px)}
+.mc-line{transition:width .55s var(--spring)!important}
+.mc:hover .mc-line{width:100%!important}
+
+/* ════════ MENÚS DE MÓDULO (submódulos) ════════ */
+.smc{transition:transform .35s var(--spring),box-shadow .35s ease,border-color .35s ease!important;position:relative;overflow:hidden}
+.smc:hover{transform:translateY(-5px)!important;box-shadow:0 14px 34px rgba(31,58,77,.14),0 0 24px rgba(84,169,200,.08)!important;border-color:rgba(84,169,200,.42)!important}
+.smc-ico{transition:transform .4s var(--spring)}
+.smc:hover .smc-ico{transform:scale(1.12) rotate(-5deg)}
+
+/* ════════ PANELES + TABLAS · modernos ════════ */
+.panel{position:relative;border:1px solid rgba(31,58,77,.10)!important;box-shadow:0 1px 3px rgba(31,58,77,.05),0 12px 40px rgba(31,58,77,.09),0 28px 72px rgba(31,58,77,.05),inset 0 1px 0 rgba(255,255,255,.95)!important;overflow:hidden}
+.panel::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;z-index:5;background:linear-gradient(90deg,var(--azul),var(--azul-d),var(--azul));background-size:200% 100%;animation:stripFlow 8s linear infinite}
+.tw{border:1px solid var(--bd-base)!important;border-radius:var(--rl)!important;box-shadow:var(--shadow-md)!important;overflow:auto!important}
+thead{background:linear-gradient(180deg,#234152,#1F3A4D)!important}
+thead th{position:relative;color:rgba(255,255,255,.62)!important;font-family:'Space Mono',monospace!important;letter-spacing:2.5px!important;text-transform:uppercase;font-size:.5rem!important}
+thead tr:last-child th{border-bottom:2px solid rgba(84,169,200,.35)!important;box-shadow:0 1px 0 rgba(84,169,200,.12)}
+tbody tr{transition:background .16s ease,box-shadow .16s ease!important}
+tbody tr:nth-child(even) td{background:rgba(31,58,77,.018)}
+tbody tr:hover td{background:rgba(84,169,200,.07)!important;color:var(--tx-primary)!important}
+tbody tr:hover td:first-child{box-shadow:inset 3px 0 0 var(--azul)}
+.ssel{transition:border-color .2s,box-shadow .2s!important}
+.ssel:focus{box-shadow:0 0 0 3px rgba(84,169,200,.16)!important;outline:none}
+
+/* ════════ KPI cards · glow on-brand ════════ */
+div[style*="grid-template-columns:repeat(4,1fr)"]>div,
+div[style*="grid-template-columns:repeat(5,1fr)"]>div{transition:transform .3s var(--spring),box-shadow .3s ease!important}
+div[style*="grid-template-columns:repeat(4,1fr)"]>div:hover,
+div[style*="grid-template-columns:repeat(5,1fr)"]>div:hover{transform:translateY(-5px)!important;box-shadow:0 16px 40px rgba(31,58,77,.14),0 0 28px rgba(84,169,200,.08)!important}
+
+/* ════════ Barras navy de encabezado de módulo ════════ */
+div[style*="background:var(--navy);border-radius:var(--r) var(--r) 0 0"]{position:relative;overflow:hidden;background:linear-gradient(135deg,#234152,#1F3A4D)!important}
+
+/* ════════ Botones · sheen táctil ════════ */
+.btn{position:relative;overflow:hidden;transition:transform .22s var(--spring),box-shadow .22s ease,filter .22s!important}
+.btn::after{content:"";position:absolute;top:0;left:-75%;width:50%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.25),transparent);transform:skewX(-20deg);transition:left .6s ease;pointer-events:none}
+.btn:hover::after{left:135%}
+.btn:active{transform:scale(.97)}
+.btn-back{transition:transform .25s var(--spring),background .25s!important}
+.btn-back:hover{transform:translateX(-4px)}
+
+/* ════════ Entrada suave de vistas ════════ */
+.ws.va,.wrap.va{animation:viewIn .5s var(--spring) both}
+@keyframes viewIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+
+/* ── Móvil: aligera efectos pesados ── */
+@media (max-width:640px){.hero::after,.mc::after,.btn::after{display:none}.hero-logo-big{animation:none}}
+</style>
+
 </body>
 </html>
