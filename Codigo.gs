@@ -783,3 +783,36 @@ function handleCallback(params) {
 
   return HtmlService.createHtmlOutput("<h1>Acción no reconocida</h1>");
 }
+
+
+/* ═══════════════════════════════════════════════════════════════
+   🔎 DIAGNÓSTICO — En el editor de Apps Script: Ejecutar ▸ diagnostico
+   Revisa el resultado (o Ver ▸ Registro). Te dice si el sistema detecta
+   tu correo y tu fila en DATA_USUARIOS. Útil cuando "no carga tu nombre".
+═══════════════════════════════════════════════════════════════ */
+function diagnostico() {
+  var out = {};
+  try { out.correoDetectado = Session.getActiveUser().getEmail(); } catch(e){ out.correoDetectado = 'ERROR: ' + e.message; }
+  try { out.correoEfectivo  = Session.getEffectiveUser().getEmail(); } catch(e){ out.correoEfectivo = 'ERROR: ' + e.message; }
+  out.idHojaMaestra = SS_MASTER_ID;
+  try {
+    var sh = SpreadsheetApp.openById(SS_MASTER_ID).getSheetByName(SH_USUARIOS);
+    if (!sh) { out.hojaUsuarios = 'NO EXISTE la hoja ' + SH_USUARIOS; }
+    else {
+      out.hojaUsuarios = 'OK · ' + (sh.getLastRow() - 1) + ' usuarios · ' + sh.getLastColumn() + ' columnas';
+      var email = String(out.correoDetectado || '').toLowerCase().trim();
+      out.totalSuperAdmins = _getSuperAdmins().length;
+      if (sh.getLastRow() >= 2) {
+        var data = sh.getRange(2, 1, sh.getLastRow() - 1, 3).getValues();
+        var fila = null;
+        for (var i = 0; i < data.length; i++) {
+          if (String(data[i][1]).toLowerCase().trim() === email) { fila = { fila: i + 2, ne: data[i][0], correo: data[i][1], nombre: data[i][2] }; break; }
+        }
+        out.miFila = fila || ('NO ENCONTRADA para el correo "' + email + '"  (revisa que esté escrito igual en la columna CORREO)');
+      }
+    }
+  } catch(e){ out.hojaUsuarios = 'ERROR: ' + e.message; }
+  try { out.perfil = obtenerPerfilCompleto(true); } catch(e){ out.perfil = 'ERROR: ' + e.message; }
+  Logger.log(JSON.stringify(out, null, 2));
+  return out;
+}
