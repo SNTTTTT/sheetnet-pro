@@ -336,14 +336,21 @@ function cargarAreas() {
 function buscarEmpleadoPorId(id) {
   try {
     const sh = SpreadsheetApp.openById(SS_MASTER_ID).getSheetByName(SH_EMPLEADOS);
-    const rows = sh.getDataRange().getValues();
-    for(let i=1; i<rows.length; i++) {
-      if(String(rows[i][0]).trim() === String(id).trim()) {
+    if (!sh) return { encontrado: false, error: "NO_HOJA" };
+    const last = sh.getLastRow();
+    if (last < 2) return { encontrado: false, total: 0 };
+    const rows = sh.getRange(2, 1, last - 1, 7).getValues();
+    const needle = String(id).trim().toLowerCase();
+    const needleNum = needle.replace(/[^0-9]/g, "");
+    for (let i = 0; i < rows.length; i++) {
+      const cell = String(rows[i][0]).trim().toLowerCase();
+      const cellNum = cell.replace(/[^0-9]/g, "");
+      if (cell === needle || (needleNum !== "" && needleNum === cellNum)) {
         return { encontrado: true, nombre: String(rows[i][1]), puesto: String(rows[i][3]), area: String(rows[i][4]).toUpperCase(), tipo: String(rows[i][5]||"OPERADOR"), regimenFiscal: String(rows[i][6]||"NO FISCAL").toUpperCase().trim() };
       }
     }
-    return { encontrado: false };
-  } catch(e) { return { encontrado: false }; }
+    return { encontrado: false, total: rows.length };
+  } catch(e) { return { encontrado: false, error: e.message }; }
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -812,6 +819,15 @@ function diagnostico() {
       }
     }
   } catch(e){ out.hojaUsuarios = 'ERROR: ' + e.message; }
+  try {
+    var she = SpreadsheetApp.openById(SS_MASTER_ID).getSheetByName(SH_EMPLEADOS);
+    if (!she) { out.hojaEmpleados = 'NO EXISTE la hoja ' + SH_EMPLEADOS; }
+    else {
+      var ne = she.getLastRow() - 1;
+      out.hojaEmpleados = 'OK · ' + ne + ' empleados';
+      if (ne >= 1) out.muestraEmpleados = she.getRange(2, 1, Math.min(ne, 5), 2).getValues().map(function(r){ return r[0] + ' = ' + r[1]; });
+    }
+  } catch(e){ out.hojaEmpleados = 'ERROR: ' + e.message; }
   try { out.perfil = obtenerPerfilCompleto(true); } catch(e){ out.perfil = 'ERROR: ' + e.message; }
   Logger.log(JSON.stringify(out, null, 2));
   return out;
