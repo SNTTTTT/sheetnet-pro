@@ -214,12 +214,16 @@ drop-shadow(0 12px 28px rgba(0,0,0,.35)) !important}.hero-corp{font-size:.53rem 
     <div class="hero-accent"></div>
     <div class="hero-tag">Sistema Corporativo Unificado · 2026</div>
     <h1 class="hero-h1">BIENVENIDO, <span id="hName">USUARIO</span></h1>
-    <p class="hero-role">Sesión activa como <b id="hRole">—</b></p>
+    <p class="hero-role">Sesión activa como <b id="hRole">—</b><span class="hero-role-date"> &middot; <i class="fa-regular fa-calendar"></i> <span id="hFecha">—</span></span></p>
     <div class="hero-meta">
      <span class="hero-meta-item"><i class="fa-solid fa-shield-halved"></i> Sesión segura</span>
      <span class="hero-meta-dot"></span>
      <span class="hero-meta-item"><i class="fa-solid fa-building"></i> <span id="hMetaArea">—</span></span>
+     <span class="hero-meta-dot"></span>
+     <span class="hero-meta-item"><i class="fa-solid fa-layer-group"></i> <span id="hMetaMods">0</span> módulos activos</span>
     </div>
+    <div class="hero-acc-lbl"><span></span>Accesos rápidos</div>
+    <div class="hero-quick" id="heroQuick"></div>
    </div>
    <div class="hero-right">
     <div class="hx-panel">
@@ -652,7 +656,7 @@ try {
  const dias = ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
  const meses = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
  const hoy = new Date();
- if(g('lobbyFecha')) g('lobbyFecha').textContent = dias[hoy.getDay()]+' '+hoy.getDate()+' '+meses[hoy.getMonth()]+'. '+hoy.getFullYear();
+ if(g('lobbyFecha')) g('lobbyFecha').textContent = dias[hoy.getDay()]+' '+hoy.getDate()+' '+meses[hoy.getMonth()]+'. '+hoy.getFullYear(); if(g('hFecha')) g('hFecha').textContent = dias[hoy.getDay()]+' '+hoy.getDate()+' '+meses[hoy.getMonth()]+'. '+hoy.getFullYear();
  if(g('lobbyArea')) g('lobbyArea').textContent = area;
 } catch(le){}
 
@@ -661,6 +665,7 @@ try {
 if(perfil.actas && perfil.actas.acceso){g('cardActas').style.display='block';if(perfil.actas.admin)g('btnAdminActas').style.display='block';if(perfil.actas.puedeSolicitar){var bSA=g('btnSolicitarActa');if(bSA)bSA.style.display='block'}}
 if(perfil.expedientes && perfil.expedientes.acceso){g('cardDatos').style.display='block'}
 if(perfil.residuos && perfil.residuos.acceso){g('cardResiduos').style.display='block';if(perfil.residuos.admin)g('btnAdminResiduos').style.display='block'}
+(function(){var q=[];if(perfil.actas&&perfil.actas.acceso)q.push(['vActasMenu','fa-file-contract','Actas Administrativas','o']);if(perfil.expedientes&&perfil.expedientes.acceso)q.push(['vDatosMenu','fa-folder-open','Expediente Digital','y']);if(perfil.residuos&&perfil.residuos.acceso)q.push(['vResiduosMenu','fa-biohazard','Residuos Peligrosos','r']);var hq=g('heroQuick');if(hq)hq.innerHTML=q.map(function(x){return '<button class="hq-btn hq-'+x[3]+'" onclick="nav(\''+x[0]+'\')"><span class="hq-ic"><i class="fa-solid '+x[1]+'"></i></span><span class="hq-tx"><span class="hq-t">'+x[2]+'</span><span class="hq-s">Abrir módulo</span></span><i class="fa-solid fa-arrow-right hq-ar"></i></button>';}).join('');var hm=g('hMetaMods');if(hm)hm.textContent=q.length;})();
 try{google.script.run.registrarSesion();}catch(e){}
 if(perfil.esSuperAdmin || (perfil.expedientes&&perfil.expedientes.admin)){g('btnAdminExp').style.display='block';var bNI=g('btnNuevoIngreso');if(bNI)bNI.style.display='block';P._esCH=true}else{P._esCH=false}
 
@@ -2918,6 +2923,30 @@ table{font-variant-numeric:tabular-nums}
 .slbl{font-family:'Space Mono',monospace!important;letter-spacing:2px!important;text-transform:uppercase}
 .b{letter-spacing:.4px;font-weight:700}
 #lobbyModCount{text-shadow:0 0 18px rgba(84,169,200,.40)}
+</style>
+
+
+<!-- ═══════════ REDISEÑO v11 · Hero izquierdo con accesos rápidos ejecutivos ═══════════ -->
+<style id="rediseno-v11">
+.hero-role-date{color:rgba(159,216,238,.65);font-weight:400;font-size:.92em}
+.hero-meta{margin-top:18px}
+.hero-acc-lbl{display:flex;align-items:center;gap:9px;margin-top:26px;font-family:'Space Mono',monospace;font-size:.54rem;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:rgba(159,216,238,.5)}
+.hero-acc-lbl span{width:18px;height:2px;border-radius:2px;background:linear-gradient(90deg,var(--azul),transparent)}
+.hero-quick{display:flex;gap:12px;margin-top:12px;flex-wrap:wrap}
+.hq-btn{display:inline-flex;align-items:center;gap:11px;background:linear-gradient(160deg,rgba(255,255,255,.07),rgba(255,255,255,.015));border:1px solid rgba(84,169,200,.18);border-radius:13px;padding:10px 16px 10px 11px;cursor:pointer;color:#EAF4FA;font-family:'Outfit',sans-serif;transition:transform .3s var(--spring),box-shadow .3s,border-color .3s;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);position:relative;overflow:hidden}
+.hq-btn::after{content:"";position:absolute;top:0;left:-70%;width:45%;height:100%;background:linear-gradient(100deg,transparent,rgba(84,169,200,.16),transparent);transform:skewX(-20deg);transition:left .6s ease;pointer-events:none}
+.hq-btn:hover::after{left:145%}
+.hq-btn:hover{transform:translateY(-3px);border-color:rgba(84,169,200,.45);box-shadow:0 12px 28px rgba(0,0,0,.28),0 0 24px rgba(84,169,200,.10)}
+.hq-ic{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:.92rem;color:#fff;flex-shrink:0;box-shadow:0 4px 12px rgba(0,0,0,.22)}
+.hq-o .hq-ic{background:linear-gradient(135deg,#F0644F,#E85B3F)}
+.hq-y .hq-ic{background:linear-gradient(135deg,#E3AC3E,#D99B29)}
+.hq-r .hq-ic{background:linear-gradient(135deg,#D15A5A,#C94A4A)}
+.hq-tx{display:flex;flex-direction:column;align-items:flex-start;line-height:1.05}
+.hq-t{font-weight:800;font-size:.85rem;color:#fff}
+.hq-s{font-family:'Space Mono',monospace;font-size:.5rem;letter-spacing:1px;text-transform:uppercase;color:rgba(159,216,238,.5);margin-top:3px}
+.hq-ar{font-size:.7rem;color:rgba(159,216,238,.45);margin-left:2px;transition:transform .3s,color .3s}
+.hq-btn:hover .hq-ar{transform:translateX(4px);color:var(--azul)}
+@media(max-width:640px){.hero-quick{gap:8px}.hq-btn{padding:8px 12px 8px 9px}.hq-s{display:none}}
 </style>
 
 <div id="__demoBadge" style="position:fixed;bottom:16px;left:50%;transform:translateX(-50%);z-index:2147483647;background:linear-gradient(135deg,#F0644F,#E85B3F);color:#fff;font-family:'Space Mono',monospace,monospace;font-size:11px;letter-spacing:1.5px;padding:9px 18px;border-radius:30px;font-weight:700;box-shadow:0 6px 22px rgba(0,0,0,.45),0 0 0 1px rgba(255,255,255,.15);pointer-events:none;display:flex;align-items:center;gap:8px">&#9888;&#65039; VISTA PREVIA &middot; DATOS DE EJEMPLO (no es tu base real)</div>
