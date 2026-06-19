@@ -212,7 +212,7 @@ drop-shadow(0 12px 28px rgba(0,0,0,.35)) !important}.hero-corp{font-size:.53rem 
   <div class="hero-inner">
    <div class="hero-left">
     <div class="hero-accent"></div>
-    <div class="hero-tag">Sistema Corporativo Unificado · 2026</div>
+    <div class="hero-tag"><span class="ht-l">Sistema Corporativo Unificado · 2026</span><span class="ht-r"><span class="ht-chip">v5.0</span><span class="ht-online"><span class="ht-od"></span>En línea</span></span></div>
     <h1 class="hero-h1">BIENVENIDO, <span id="hName">USUARIO</span></h1>
     <p class="hero-role">Sesión activa como <b id="hRole">—</b><span class="hero-role-date"> &middot; <i class="fa-regular fa-calendar"></i> <span id="hFecha">—</span></span></p>
     <div class="hero-meta">
@@ -227,7 +227,9 @@ drop-shadow(0 12px 28px rgba(0,0,0,.35)) !important}.hero-corp{font-size:.53rem 
    </div>
    <div class="hero-right">
     <div class="hx-panel">
-     <div class="hx-logo"><img src="https://drive.google.com/thumbnail?id=1NZc6hXP0bL_ugk6jou80HEkJrsxqv7rs&sz=h500" class="hero-logo-big"><div class="hx-corp">SANTILLÁN RAMÍREZ<span>Diseño y Solución Integral</span></div></div>
+     <div class="hx-top"><img src="https://drive.google.com/thumbnail?id=1NZc6hXP0bL_ugk6jou80HEkJrsxqv7rs&sz=h500" class="hx-logo-img"><span class="hx-status"><span class="hx-sd"></span>Activa</span></div>
+     <div class="hx-corp2">SANTILLÁN RAMÍREZ</div>
+     <div class="hx-sub2">Diseño y Solución Integral · SA de CV</div>
      <div class="hx-divider"></div>
      <div class="hx-grid">
       <div class="hx-cell"><div class="hx-k">Operador</div><div class="hx-v hx-mono" id="hxOperador">—</div></div>
@@ -2947,6 +2949,31 @@ table{font-variant-numeric:tabular-nums}
 .hq-ar{font-size:.7rem;color:rgba(159,216,238,.45);margin-left:2px;transition:transform .3s,color .3s}
 .hq-btn:hover .hq-ar{transform:translateX(4px);color:var(--azul)}
 @media(max-width:640px){.hero-quick{gap:8px}.hq-btn{padding:8px 12px 8px 9px}.hq-s{display:none}}
+</style>
+
+
+<!-- ═══════════ REDISEÑO v12 · Status bar + panel ejecutivo premium ═══════════ -->
+<style id="rediseno-v12">
+/* ── TAG → barra de estado corporativa (llena, sin línea suelta) ── */
+.hero-tag{display:flex!important;align-items:center;justify-content:space-between;gap:16px;width:100%;box-sizing:border-box;border:1px solid rgba(84,169,200,.20)!important;background:linear-gradient(90deg,rgba(84,169,200,.08),rgba(84,169,200,.015))!important;border-radius:10px!important;padding:9px 16px 9px 30px!important}
+.hero-tag::after{display:none!important}
+.ht-l{font-family:'Space Mono',monospace;font-size:.54rem;letter-spacing:3px;color:rgba(159,216,238,.78);text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ht-r{display:inline-flex;align-items:center;gap:10px;flex-shrink:0}
+.ht-chip{font-family:'Space Mono',monospace;font-size:.5rem;letter-spacing:1px;color:#9FD8EE;background:rgba(84,169,200,.12);border:1px solid rgba(84,169,200,.25);border-radius:20px;padding:2px 9px}
+.ht-online{display:inline-flex;align-items:center;gap:6px;font-family:'Space Mono',monospace;font-size:.5rem;letter-spacing:1.5px;text-transform:uppercase;color:#5BD89A}
+.ht-od{width:6px;height:6px;border-radius:50%;background:#34D399;box-shadow:0 0 8px #34D399;animation:tagPulse 2.2s infinite}
+@media(max-width:680px){.ht-r{display:none}.hero-tag{padding-right:14px!important}}
+
+/* ── PANEL → premium, logo sin solape ── */
+.hx-panel{min-width:262px!important;padding:20px 22px!important;background:linear-gradient(165deg,rgba(255,255,255,.08),rgba(255,255,255,.02))!important;border:1px solid rgba(84,169,200,.22)!important}
+.hx-top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:15px}
+.hx-logo-img{height:30px;width:auto;filter:drop-shadow(0 4px 14px rgba(84,169,200,.30))}
+.hx-status{display:inline-flex;align-items:center;gap:6px;font-family:'Space Mono',monospace;font-size:.46rem;letter-spacing:1.5px;text-transform:uppercase;color:#5BD89A;flex-shrink:0}
+.hx-sd{width:6px;height:6px;border-radius:50%;background:#34D399;box-shadow:0 0 8px #34D399;animation:tagPulse 2.2s infinite}
+.hx-corp2{font-family:'Montserrat',sans-serif;font-size:.94rem;font-weight:900;letter-spacing:.3px;color:#EAF4FA;line-height:1}
+.hx-sub2{font-family:'Space Mono',monospace;font-size:.45rem;letter-spacing:.7px;text-transform:uppercase;color:rgba(159,216,238,.5);margin-top:6px}
+.hx-divider{margin:16px 0 15px!important}
+.hx-hora{font-size:1.15rem!important}
 </style>
 
 <div id="__demoBadge" style="position:fixed;bottom:16px;left:50%;transform:translateX(-50%);z-index:2147483647;background:linear-gradient(135deg,#F0644F,#E85B3F);color:#fff;font-family:'Space Mono',monospace,monospace;font-size:11px;letter-spacing:1.5px;padding:9px 18px;border-radius:30px;font-weight:700;box-shadow:0 6px 22px rgba(0,0,0,.45),0 0 0 1px rgba(255,255,255,.15);pointer-events:none;display:flex;align-items:center;gap:8px">&#9888;&#65039; VISTA PREVIA &middot; DATOS DE EJEMPLO (no es tu base real)</div>
