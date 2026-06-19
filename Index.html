@@ -2807,5 +2807,49 @@ div[style*="background:var(--navy);border-radius:var(--r) var(--r) 0 0"]{positio
 @media (max-width:640px){.hero::after,.mc::after,.btn::after{display:none}.hero-logo-big{animation:none}}
 </style>
 
+
+<!-- ═══════════ REDISEÑO v9 · tarjetas y KPIs con más carácter (on-brand) ═══════════ -->
+<style id="rediseno-v9">
+/* Tarjetas: tinte sutil por módulo */
+.mc.var-o{background:linear-gradient(165deg,rgba(240,100,79,.055),#fff 52%)!important}
+.mc.var-y{background:linear-gradient(165deg,rgba(217,155,41,.055),#fff 52%)!important}
+.mc.var-r{background:linear-gradient(165deg,rgba(201,74,74,.055),#fff 52%)!important}
+/* Íconos en cápsula con gradiente + glow */
+.mc-ico{width:54px!important;height:54px!important;border-radius:15px!important;font-size:1.25rem!important;display:flex!important;align-items:center;justify-content:center;transition:transform .5s var(--spring),box-shadow .5s ease!important}
+.mc-ico.o{background:linear-gradient(135deg,#F0644F,#E85B3F)!important;color:#fff!important;box-shadow:0 7px 20px rgba(240,100,79,.30)}
+.mc-ico.y{background:linear-gradient(135deg,#E3AC3E,#D99B29)!important;color:#fff!important;box-shadow:0 7px 20px rgba(217,155,41,.30)}
+.mc-ico.r{background:linear-gradient(135deg,#D15A5A,#C94A4A)!important;color:#fff!important;box-shadow:0 7px 20px rgba(201,74,74,.30)}
+/* Número marca de agua más grande y con tinte */
+.mc-num{font-size:5.4rem!important;font-weight:900!important;opacity:.06}
+.mc.var-o .mc-num{color:#F0644F}.mc.var-y .mc-num{color:#D99B29}.mc.var-r .mc-num{color:#C94A4A}
+.mc:hover .mc-num{opacity:.13}
+/* Etiqueta MÓDULO con punto de color */
+.mc-tag{position:relative;padding-left:16px!important}
+.mc-tag::before{content:"";position:absolute;left:0;top:50%;transform:translateY(-50%);width:7px;height:7px;border-radius:50%}
+.mc-tag.o::before{background:#F0644F}.mc-tag.y::before{background:#D99B29}.mc-tag.r::before{background:#C94A4A}
+/* Flecha en cápsula */
+.mc-arr{width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:rgba(31,58,77,.05);color:var(--navy);transition:transform .4s var(--spring),background .4s,color .4s!important}
+.mc.var-o:hover .mc-arr{background:#F0644F;color:#fff}.mc.var-y:hover .mc-arr{background:#D99B29;color:#fff}.mc.var-r:hover .mc-arr{background:#C94A4A;color:#fff}
+</style>
+<script id="countup-v9">
+/* KPIs que cuentan de 0 al valor (suave, seguro, sin bucles) */
+(function(){
+  function ease(p){return p<.5?2*p*p:1-Math.pow(-2*p+2,2)/2;}
+  function animar(el){
+    var target=parseInt((el.textContent||'').replace(/[^\d-]/g,''),10);
+    if(isNaN(target)){return;}
+    if(el.__cuOn||el.__cuDone===target)return;
+    el.__cuOn=true; var ini=0,dur=700,t0=performance.now();
+    function step(t){var p=Math.min((t-t0)/dur,1);el.textContent=Math.round(ini+(target-ini)*ease(p));if(p<1){requestAnimationFrame(step);}else{el.__cuOn=false;el.__cuDone=target;}}
+    requestAnimationFrame(step);
+  }
+  function esContador(el){return el&&el.id&&(/^stat/.test(el.id)||/Cnt$/.test(el.id)||el.id==='lobbyModCount');}
+  var obs=new MutationObserver(function(m){m.forEach(function(x){var el=x.target.nodeType===3?x.target.parentElement:x.target;if(esContador(el))animar(el);});});
+  window.addEventListener('load',function(){
+    document.querySelectorAll('[id^="stat"],[id$="Cnt"],#lobbyModCount').forEach(function(el){obs.observe(el,{childList:true,characterData:true,subtree:true});});
+  });
+})();
+</script>
+
 </body>
 </html>
