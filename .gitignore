@@ -1,5 +1,5 @@
 # Renders / capturas de vista previa (transitorios)
-*_preview.png
+*.png
 
 # Configuración local de Claude Code
 .claude/settings.local.json
